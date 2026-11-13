@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=WiFi-Sense & NetDiag
+Comment=Osservazioni di rete locali e posizione del sistema
+Exec=python3 main.py
+Terminal=false
+Categories=Network;Utility;
+X-Geoclue-Reason=Visualizzare la posizione del PC con accuratezza e data della misura

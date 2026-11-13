@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "created": "2026-11-12",
+  "three_version": "0.170.0",
+  "globe_version": "2.33.2",
+  "geo_release": "2026-11",
+  "assets": [
+    {
+      "path": "static/libs/three.min.js",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+      "kind": "three-esm",
+      "source_sha256": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
+      "sha256": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
+      "bytes": 691648
+    },
+    {
+      "path": "static/libs/OrbitControls.js",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js",
+      "kind": "orbit-local-import",
+      "source_sha256": "80efaadea4f8a636a65fb0bd08bfef62f3d93a0bb94e2e7500f23176c5c07f4e",
+      "sha256": "9b34778570d9d5d733d69f0ccfc2e057d75f855895384320264639ec34f0e963",
+      "bytes": 32143
+    },
+    {
+      "path": "static/libs/globe.gl.min.js",
+      "url": "https://cdn.jsdelivr.net/npm/globe.gl@2.33.2/dist/globe.gl.min.js",
+      "kind": "javascript",
+      "source_sha256": "efdf3784be59abb5c26b1120d3d52a2485805591044b1c80ec68f680cd9a19c3",
+      "sha256": "efdf3784be59abb5c26b1120d3d52a2485805591044b1c80ec68f680cd9a19c3",
+      "bytes": 1610494
+    },
+    {
+      "path": "static/world.geojson",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_admin_0_countries.geojson",
+      "kind": "geojson",
+      "source_sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+      "sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+      "bytes": 838726
+    },
+    {
+      "path": "data/dbip-country-lite-2026-11.csv.gz",
+      "url": "https://download.db-ip.com/free/dbip-country-lite-2026-11.csv.gz",
+      "kind": "gzip",
+      "source_sha256": "e5c8459d638a272ece7f4d7cfa49dce18d91b4f403f6940ba9249bf0db3781fd",
+      "sha256": "e5c8459d638a272ece7f4d7cfa49dce18d91b4f403f6940ba9249bf0db3781fd",
+      "bytes": 4623153
+    },
+    {
+      "path": "licenses/THREE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/three@0.170.0/LICENSE",
+      "kind": "text",
+      "source_sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+      "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+      "bytes": 1081
+    },
+    {
+      "path": "licenses/GLOBE_GL.txt",
+      "url": "https://cdn.jsdelivr.net/npm/globe.gl@2.33.2/LICENSE",
+      "kind": "text",
+      "source_sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+      "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+      "bytes": 1072
+    },
+    {
+      "path": "licenses/APACHE-2.0.txt",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "kind": "text",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "licenses/dependencies/globe.gl-2.33.2.txt",
+      "url": "https://cdn.jsdelivr.net/npm/globe.gl@2.33.2/LICENSE",
+      "kind": "text",
+      "source_sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+      "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+      "bytes": 1072
+    }
+  ]
+}

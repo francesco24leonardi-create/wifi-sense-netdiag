@@ -1,0 +1,7 @@
+{
+  "interface": null,
+  "hz": 10,
+  "mode": "real",
+  "capture": false,
+  "location_provider": "system"
+}

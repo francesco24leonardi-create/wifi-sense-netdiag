@@ -1,0 +1,1056 @@
+{
+  "description": "Runtime dependency notices resolved from original npm tarballs using package ranges and releases available when Globe.gl 2.33.2 was published. The upstream UMD has no dependency lockfile; this is not a certification of its exact built module versions. Original embedded font/H3 notices are retained.",
+  "resolution_cutoff": "2024-11-18T01:31:50.513000+00:00",
+  "packages": [
+    {
+      "name": "@babel/runtime",
+      "requested_range": "^7.17.8",
+      "version": "7.26.0",
+      "published": "2024-10-25T13:30:11.826Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/%40babel%2Fruntime/7.26.0",
+      "tarball": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.26.0.tgz",
+      "tarball_sha256": "79f700634d3e5c5654631b73fc2c90fe89d527ae68dc3235f413a055c7c68922",
+      "registry_integrity": "sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/_babel_runtime-7.26.0/01-LICENSE",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "bytes": 1106
+        }
+      ]
+    },
+    {
+      "name": "@turf/boolean-point-in-polygon",
+      "requested_range": "^7.1",
+      "version": "7.1.0",
+      "published": "2024-08-09T18:24:35.205Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/%40turf%2Fboolean-point-in-polygon/7.1.0",
+      "tarball": "https://registry.npmjs.org/@turf/boolean-point-in-polygon/-/boolean-point-in-polygon-7.1.0.tgz",
+      "tarball_sha256": "6cabaf5869fc3e3489dce7a9a6ef1be91ac052fac9cd323dde6ebc39ebc97810",
+      "registry_integrity": "sha512-mprVsyIQ+ijWTZwbnO4Jhxu94ZW2M2CheqLiRTsGJy0Ooay9v6Av5/Nl3/Gst7ZVXxPqMeMaFYkSzcTc87AKew==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/_turf_boolean-point-in-polygon-7.1.0/01-LICENSE",
+          "sha256": "f9b32b82fd5a1d3a990526d86da97f42fb805d9f4d9f978125c4679b674fce44",
+          "bytes": 1073
+        }
+      ]
+    },
+    {
+      "name": "@turf/helpers",
+      "requested_range": "^7.1.0",
+      "version": "7.1.0",
+      "published": "2024-08-09T18:24:30.480Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/%40turf%2Fhelpers/7.1.0",
+      "tarball": "https://registry.npmjs.org/@turf/helpers/-/helpers-7.1.0.tgz",
+      "tarball_sha256": "9262d3b007ed5b4225a61759a01ae1fb3f04a0f35fdc9d27628b5457dc30e364",
+      "registry_integrity": "sha512-dTeILEUVeNbaEeoZUOhxH5auv7WWlOShbx7QSd4s0T4Z0/iz90z9yaVCtZOLbU89umKotwKaJQltBNO9CzVgaQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/_turf_helpers-7.1.0/01-LICENSE",
+          "sha256": "f9b32b82fd5a1d3a990526d86da97f42fb805d9f4d9f978125c4679b674fce44",
+          "bytes": 1073
+        }
+      ]
+    },
+    {
+      "name": "@turf/invariant",
+      "requested_range": "^7.1.0",
+      "version": "7.1.0",
+      "published": "2024-08-09T18:24:32.025Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/%40turf%2Finvariant/7.1.0",
+      "tarball": "https://registry.npmjs.org/@turf/invariant/-/invariant-7.1.0.tgz",
+      "tarball_sha256": "ef0a1129cd9b19509c2e78254b770e95a494079fff3d519e595aaf662737e2b0",
+      "registry_integrity": "sha512-OCLNqkItBYIP1nE9lJGuIUatWGtQ4rhBKAyTfFu0z8npVzGEYzvguEeof8/6LkKmTTEHW53tCjoEhSSzdRh08Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/_turf_invariant-7.1.0/01-LICENSE",
+          "sha256": "f9b32b82fd5a1d3a990526d86da97f42fb805d9f4d9f978125c4679b674fce44",
+          "bytes": 1073
+        }
+      ]
+    },
+    {
+      "name": "@tweenjs/tween.js",
+      "requested_range": "18 - 25",
+      "version": "25.0.0",
+      "published": "2024-07-26T04:45:13.606Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/%40tweenjs%2Ftween.js/25.0.0",
+      "tarball": "https://registry.npmjs.org/@tweenjs/tween.js/-/tween.js-25.0.0.tgz",
+      "tarball_sha256": "3adc6badf9071b9ad70df0e3771ebf6ef2c4d7e0850fbd1249f853893a5ad6b2",
+      "registry_integrity": "sha512-XKLA6syeBUaPzx4j3qwMqzzq+V4uo72BnlbOjmuljLrRqdsd3qnzvZZoxvMHZ23ndsRS4aufU6JOZYpCbU6T1A==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/_tweenjs_tween.js-25.0.0/01-LICENSE",
+          "sha256": "c95fecd88f2709bfc34e4d1f1ccc36d17048990e6ba26c283cfecdef0432936b",
+          "bytes": 1166
+        }
+      ]
+    },
+    {
+      "name": "@types/geojson",
+      "requested_range": "^7946.0.10",
+      "version": "7946.0.14",
+      "published": "2024-01-30T21:41:42.311Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/%40types%2Fgeojson/7946.0.14",
+      "tarball": "https://registry.npmjs.org/@types/geojson/-/geojson-7946.0.14.tgz",
+      "tarball_sha256": "b70c8b8fc2da2c91ecea57afb7207185b8c14c838d00fadb86e9a67461f783f0",
+      "registry_integrity": "sha512-WCfD5Ht3ZesJUsONdhvm84dmzWOiOzOAqOncN0++w0lBw1o8OuDNJF2McvvCef/yBqb/HYRahp1BYtODFQ8bRg==",
+      "notices": [
+        {
+          "member": "geojson/LICENSE",
+          "path": "licenses/dependencies/_types_geojson-7946.0.14/01-LICENSE",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "bytes": 1141
+        }
+      ]
+    },
+    {
+      "name": "accessor-fn",
+      "requested_range": "1",
+      "version": "1.5.1",
+      "published": "2024-07-19T22:21:12.727Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/accessor-fn/1.5.1",
+      "tarball": "https://registry.npmjs.org/accessor-fn/-/accessor-fn-1.5.1.tgz",
+      "tarball_sha256": "d754736238ca32a33590083f829420de31d1b29c0f984db8f9279b1191681c83",
+      "registry_integrity": "sha512-zZpFYBqIL1Aqg+f2qmYHJ8+yIZF7/tP6PUGx2/QM0uGPSO5UegpinmkNwDohxWtOj586BpMPVRUjce2HI6xB3A==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/accessor-fn-1.5.1/01-LICENSE",
+          "sha256": "7262e566e874d1ce8cfadace01d4f635f8d704b6bdf7b4345cc028e5faeafded",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "requested_range": "3",
+      "version": "3.2.4",
+      "published": "2023-05-30T21:53:24.048Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-array/3.2.4",
+      "tarball": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "tarball_sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "registry_integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-array-3.2.4/01-LICENSE",
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "requested_range": "2.10.0 - 3",
+      "version": "3.2.4",
+      "published": "2023-05-30T21:53:24.048Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-array/3.2.4",
+      "tarball": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "tarball_sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "registry_integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-array-3.2.4/01-LICENSE",
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "requested_range": "1 - 3",
+      "version": "3.2.4",
+      "published": "2023-05-30T21:53:24.048Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-array/3.2.4",
+      "tarball": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "tarball_sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "registry_integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-array-3.2.4/01-LICENSE",
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "requested_range": "2.5.0 - 3",
+      "version": "3.2.4",
+      "published": "2023-05-30T21:53:24.048Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-array/3.2.4",
+      "tarball": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "tarball_sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "registry_integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-array-3.2.4/01-LICENSE",
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-array",
+      "requested_range": "2 - 3",
+      "version": "3.2.4",
+      "published": "2023-05-30T21:53:24.048Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-array/3.2.4",
+      "tarball": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "tarball_sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "registry_integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-array-3.2.4/01-LICENSE",
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-color",
+      "requested_range": "3",
+      "version": "3.1.0",
+      "published": "2022-03-28T22:46:28.202Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-color/3.1.0",
+      "tarball": "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz",
+      "tarball_sha256": "d41bbcd99dd4f00e696546bffc73fed9b8fb6c3354905b6ea1721bff25f33b42",
+      "registry_integrity": "sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-color-3.1.0/01-LICENSE",
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-color",
+      "requested_range": "1 - 3",
+      "version": "3.1.0",
+      "published": "2022-03-28T22:46:28.202Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-color/3.1.0",
+      "tarball": "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz",
+      "tarball_sha256": "d41bbcd99dd4f00e696546bffc73fed9b8fb6c3354905b6ea1721bff25f33b42",
+      "registry_integrity": "sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-color-3.1.0/01-LICENSE",
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-delaunay",
+      "requested_range": "6",
+      "version": "6.0.4",
+      "published": "2023-04-01T02:39:11.886Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-delaunay/6.0.4",
+      "tarball": "https://registry.npmjs.org/d3-delaunay/-/d3-delaunay-6.0.4.tgz",
+      "tarball_sha256": "935113ffa78d545505c8f1accf95be0e48594737eab34db8f50c9d6319907971",
+      "registry_integrity": "sha512-mdjtIZ1XLAM8bm/hx3WwjfHt6Sggek7qH043O8KEjDXN40xi3vx/6pYSVTwLjEgiXQTbvaouWKynLBiUZ6SK6A==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-delaunay-6.0.4/01-LICENSE",
+          "sha256": "582c3022bd01942336095f92b58a90b1be624dc547d987555c6c956512dd24c1",
+          "bytes": 757
+        }
+      ]
+    },
+    {
+      "name": "d3-format",
+      "requested_range": "1 - 3",
+      "version": "3.1.0",
+      "published": "2021-12-04T16:58:28.909Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-format/3.1.0",
+      "tarball": "https://registry.npmjs.org/d3-format/-/d3-format-3.1.0.tgz",
+      "tarball_sha256": "5439103fc9b6f033e02bf68fbeb13ecd2c33442f77ea772a4b2b1bc4f4cee5ba",
+      "registry_integrity": "sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-format-3.1.0/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-geo",
+      "requested_range": "3",
+      "version": "3.1.1",
+      "published": "2024-03-12T22:06:03.888Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-geo/3.1.1",
+      "tarball": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.1.tgz",
+      "tarball_sha256": "fe1f2dd81a87d942790c5a7786f4aab03df2b357d46d8af56b613fb8a1bb9be5",
+      "registry_integrity": "sha512-637ln3gXKXOwhalDzinUgY83KzNWZRKbYubaG+fGVuc/dxO64RRljtCTnf5ecMyE1RIdtqpkVcq0IbtU2S8j2Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-geo-3.1.1/01-LICENSE",
+          "sha256": "3e3edc1224eec9c39cd26491a21304a62883c1e5b6a65c5283ccc7a6cc94baee",
+          "bytes": 1857
+        }
+      ]
+    },
+    {
+      "name": "d3-geo",
+      "requested_range": "1 - 3",
+      "version": "3.1.1",
+      "published": "2024-03-12T22:06:03.888Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-geo/3.1.1",
+      "tarball": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.1.tgz",
+      "tarball_sha256": "fe1f2dd81a87d942790c5a7786f4aab03df2b357d46d8af56b613fb8a1bb9be5",
+      "registry_integrity": "sha512-637ln3gXKXOwhalDzinUgY83KzNWZRKbYubaG+fGVuc/dxO64RRljtCTnf5ecMyE1RIdtqpkVcq0IbtU2S8j2Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-geo-3.1.1/01-LICENSE",
+          "sha256": "3e3edc1224eec9c39cd26491a21304a62883c1e5b6a65c5283ccc7a6cc94baee",
+          "bytes": 1857
+        }
+      ]
+    },
+    {
+      "name": "d3-geo-voronoi",
+      "requested_range": "2",
+      "version": "2.1.0",
+      "published": "2024-05-17T06:52:58.277Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-geo-voronoi/2.1.0",
+      "tarball": "https://registry.npmjs.org/d3-geo-voronoi/-/d3-geo-voronoi-2.1.0.tgz",
+      "tarball_sha256": "f973f29d20a41e8aca85f7a505ada09de8e91a2d62f349162f9354879d77d598",
+      "registry_integrity": "sha512-kqE4yYuOjPbKdBXG0xztCacPwkVSK2REF1opSNrnqqtXJmNcM++UbwQ8SxvwP6IQTj9RvIjjK4qeiVsEfj0Z2Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-geo-voronoi-2.1.0/01-LICENSE",
+          "sha256": "dd31f241bc0636dc4dda365fc8dac04cabbf70cb4fdb1ca23c64f1b630ad7b4d",
+          "bytes": 736
+        }
+      ]
+    },
+    {
+      "name": "d3-interpolate",
+      "requested_range": "3",
+      "version": "3.0.1",
+      "published": "2021-06-05T18:38:34.549Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-interpolate/3.0.1",
+      "tarball": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz",
+      "tarball_sha256": "7e8df78d233cd102a0bb518658dc0b7d5c38442b6f2dbc8b95ffc14ba87c7c33",
+      "registry_integrity": "sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-interpolate-3.0.1/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-interpolate",
+      "requested_range": "1.2.0 - 3",
+      "version": "3.0.1",
+      "published": "2021-06-05T18:38:34.549Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-interpolate/3.0.1",
+      "tarball": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz",
+      "tarball_sha256": "7e8df78d233cd102a0bb518658dc0b7d5c38442b6f2dbc8b95ffc14ba87c7c33",
+      "registry_integrity": "sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-interpolate-3.0.1/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-interpolate",
+      "requested_range": "1 - 3",
+      "version": "3.0.1",
+      "published": "2021-06-05T18:38:34.549Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-interpolate/3.0.1",
+      "tarball": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz",
+      "tarball_sha256": "7e8df78d233cd102a0bb518658dc0b7d5c38442b6f2dbc8b95ffc14ba87c7c33",
+      "registry_integrity": "sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-interpolate-3.0.1/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-scale",
+      "requested_range": "4",
+      "version": "4.0.2",
+      "published": "2021-09-24T17:43:03.930Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-scale/4.0.2",
+      "tarball": "https://registry.npmjs.org/d3-scale/-/d3-scale-4.0.2.tgz",
+      "tarball_sha256": "bf50a1f34ba0e6fa25cb7ae902abe0b9e2f85ced39fdca7b18fbe863fbaa39a7",
+      "registry_integrity": "sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-scale-4.0.2/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-scale",
+      "requested_range": "1 - 4",
+      "version": "4.0.2",
+      "published": "2021-09-24T17:43:03.930Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-scale/4.0.2",
+      "tarball": "https://registry.npmjs.org/d3-scale/-/d3-scale-4.0.2.tgz",
+      "tarball_sha256": "bf50a1f34ba0e6fa25cb7ae902abe0b9e2f85ced39fdca7b18fbe863fbaa39a7",
+      "registry_integrity": "sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-scale-4.0.2/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-scale-chromatic",
+      "requested_range": "3",
+      "version": "3.1.0",
+      "published": "2024-03-12T21:00:11.077Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-scale-chromatic/3.1.0",
+      "tarball": "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.1.0.tgz",
+      "tarball_sha256": "2573f980e0acbbecc919f5c5fdf7cd3a8110eda2497da7b94ae303fab9c32aa4",
+      "registry_integrity": "sha512-A3s5PWiZ9YCXFye1o246KoscMWqf8BsD9eRiJ3He7C9OBaxKhAd5TFCdEx/7VbKtxxTsu//1mMJFrEt572cEyQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-scale-chromatic-3.1.0/01-LICENSE",
+          "sha256": "0986d93944902cca9af86824b6a641b4b7c2d10602fc510c433a8bcd443919fe",
+          "bytes": 1423
+        }
+      ]
+    },
+    {
+      "name": "d3-time",
+      "requested_range": "2.1.1 - 3",
+      "version": "3.1.0",
+      "published": "2022-12-02T23:58:08.483Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-time/3.1.0",
+      "tarball": "https://registry.npmjs.org/d3-time/-/d3-time-3.1.0.tgz",
+      "tarball_sha256": "a9f2c8e177b76e7068e7c9c77722c4924c71c9e54f9b1e245d27ef11b28dbc08",
+      "registry_integrity": "sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-time-3.1.0/01-LICENSE",
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-time",
+      "requested_range": "1 - 3",
+      "version": "3.1.0",
+      "published": "2022-12-02T23:58:08.483Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-time/3.1.0",
+      "tarball": "https://registry.npmjs.org/d3-time/-/d3-time-3.1.0.tgz",
+      "tarball_sha256": "a9f2c8e177b76e7068e7c9c77722c4924c71c9e54f9b1e245d27ef11b28dbc08",
+      "registry_integrity": "sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-time-3.1.0/01-LICENSE",
+          "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-time-format",
+      "requested_range": "2 - 4",
+      "version": "4.1.0",
+      "published": "2021-12-04T17:02:51.666Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-time-format/4.1.0",
+      "tarball": "https://registry.npmjs.org/d3-time-format/-/d3-time-format-4.1.0.tgz",
+      "tarball_sha256": "46f1492ef6be8afe04a844876a644a4a964da7f87937e90e93f9585acff9d30e",
+      "registry_integrity": "sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-time-format-4.1.0/01-LICENSE",
+          "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+          "bytes": 731
+        }
+      ]
+    },
+    {
+      "name": "d3-tricontour",
+      "requested_range": "1",
+      "version": "1.0.2",
+      "published": "2021-08-31T08:30:07.226Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/d3-tricontour/1.0.2",
+      "tarball": "https://registry.npmjs.org/d3-tricontour/-/d3-tricontour-1.0.2.tgz",
+      "tarball_sha256": "33addd49f24e583b5b15dd95d5c6e4eec4a4ba703e2767c13ce6f1aca4176cd1",
+      "registry_integrity": "sha512-HIRxHzHagPtUPNabjOlfcyismJYIsc+Xlq4mlsts4e8eAcwyq9Tgk/sYdyhlBpQ0MHwVquc/8j+e29YjXnmxeA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/d3-tricontour-1.0.2/01-LICENSE",
+          "sha256": "6f5a9cc5700fd0ffee7f180da94f2f48d5569d4c07375ff3698f9fcb39bcf9fd",
+          "bytes": 735
+        }
+      ]
+    },
+    {
+      "name": "data-joint",
+      "requested_range": "1",
+      "version": "1.3.1",
+      "published": "2023-02-08T01:34:36.267Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/data-joint/1.3.1",
+      "tarball": "https://registry.npmjs.org/data-joint/-/data-joint-1.3.1.tgz",
+      "tarball_sha256": "0e92670418603eb43a1fce811124f8de923825bbf1ae5ef28b8c60980708afcf",
+      "registry_integrity": "sha512-tMK0m4OVGqiA3zkn8JmO6YAqD8UwJqIAx4AAwFl1SKTtKAqcXePuT+n2aayiX9uITtlN3DFtKKTOxJRUc2+HvQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/data-joint-1.3.1/01-LICENSE",
+          "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "delaunator",
+      "requested_range": "5",
+      "version": "5.0.1",
+      "published": "2024-01-24T17:23:22.148Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/delaunator/5.0.1",
+      "tarball": "https://registry.npmjs.org/delaunator/-/delaunator-5.0.1.tgz",
+      "tarball_sha256": "6b30e6cf0aa49bf7882a3fb6dd2b5d3c33478d3693356d8a74a88f65df411f55",
+      "registry_integrity": "sha512-8nvh+XBe96aCESrGOqMp/84b13H9cdKbG5P2ejQCh4d4sK9RL4371qou9drQjMhvnPmhWl5hnmqbEE0fXr9Xnw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/delaunator-5.0.1/01-LICENSE",
+          "sha256": "b8878372a0d7d1c303f48659ddbd6881807cd2196e4af2f548d8da0c0f7c4d71",
+          "bytes": 738
+        }
+      ]
+    },
+    {
+      "name": "earcut",
+      "requested_range": "3",
+      "version": "3.0.0",
+      "published": "2024-06-28T09:00:26.892Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/earcut/3.0.0",
+      "tarball": "https://registry.npmjs.org/earcut/-/earcut-3.0.0.tgz",
+      "tarball_sha256": "32057342ccd791ef6048737b0e32b5215670ccb959a2290237e5963cff60fa07",
+      "registry_integrity": "sha512-41Fs7Q/PLq1SDbqjsgcY7GA42T0jvaCNGXgGtsNdvg+Yv8eIu06bxv4/PoREkZ9nMDNwnUSG9OFB9+yv8eKhDg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/earcut-3.0.0/01-LICENSE",
+          "sha256": "cd661c432ea8243974e6fde6fc433ebee3e96525ca8b66321b9d9971674ede60",
+          "bytes": 738
+        }
+      ]
+    },
+    {
+      "name": "frame-ticker",
+      "requested_range": "1",
+      "version": "1.0.3",
+      "published": "2017-01-31T17:00:24.621Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/frame-ticker/1.0.3",
+      "tarball": "https://registry.npmjs.org/frame-ticker/-/frame-ticker-1.0.3.tgz",
+      "tarball_sha256": "2ec238dc5c08f1cc963e2538e9ddb08d870728a736a6d903583c10542c47983c",
+      "registry_integrity": "sha512-E0X2u2JIvbEMrqEg5+4BpTqaD22OwojJI63K7MdKHdncjtAhGRbCR8nJCr2vwEt9NWBPCPcu70X9smPviEBy8Q==",
+      "notices": [
+        {
+          "member": "package/LICENSE.md",
+          "path": "licenses/dependencies/frame-ticker-1.0.3/01-LICENSE.md",
+          "sha256": "de5fc72b9b4a373270d4543cc19304eb201721ffe3e2ebb39ce608bea68f6c4c",
+          "bytes": 1078
+        }
+      ]
+    },
+    {
+      "name": "globe.gl",
+      "requested_range": "2.33.2",
+      "version": "2.33.2",
+      "published": "2024-11-18T01:31:50.513Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/globe.gl/2.33.2",
+      "tarball": "https://registry.npmjs.org/globe.gl/-/globe.gl-2.33.2.tgz",
+      "tarball_sha256": "bb7674f222ae5e1d17672dc7eb18a79882afeee1644ca5f476ce01a9d61fe224",
+      "registry_integrity": "sha512-sh/0NNibpXSOAQLXyzMl4YBQ4b5NcoSUR4MFdBdYb8wXi2j3XyRCOoPKg7I581J3gHQGqqt6QpIB+Zr2TvfUPg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/globe.gl-2.33.2/01-LICENSE",
+          "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "h3-js",
+      "requested_range": "4",
+      "version": "4.1.0",
+      "published": "2023-01-20T01:30:13.918Z",
+      "license": "Apache-2.0",
+      "package_url": "https://registry.npmjs.org/h3-js/4.1.0",
+      "tarball": "https://registry.npmjs.org/h3-js/-/h3-js-4.1.0.tgz",
+      "tarball_sha256": "a4904c6158e556f1925e3cb2f629abeea3911b77ed8bc317831b72c70f6db008",
+      "registry_integrity": "sha512-LQhmMl1dRQQjMXPzJc7MpZ/CqPOWWuAvVEoVJM9n/s7vHypj+c3Pd5rLQCkAsOgAoAYKbNCsYFE++LF7MvSfCQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/h3-js-4.1.0/01-LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        },
+        {
+          "member": "package/NOTICE",
+          "path": "licenses/dependencies/h3-js-4.1.0/02-NOTICE",
+          "sha256": "a265b8d138fa9064bbe12c1e9d6785705bdc91a3655b241b1fd01a7a0ead6663",
+          "bytes": 567
+        }
+      ]
+    },
+    {
+      "name": "index-array-by",
+      "requested_range": "1",
+      "version": "1.4.2",
+      "published": "2024-07-19T22:24:47.309Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/index-array-by/1.4.2",
+      "tarball": "https://registry.npmjs.org/index-array-by/-/index-array-by-1.4.2.tgz",
+      "tarball_sha256": "17058579f709a919a1cf80be5b5f7764d23ed9a24c1b005ec5e6066bdf77faba",
+      "registry_integrity": "sha512-SP23P27OUKzXWEC/TOyWlwLviofQkCSCKONnc62eItjp69yCZZPqDQtr3Pw5gJDnPeUMqExmKydNZaJO0FU9pw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/index-array-by-1.4.2/01-LICENSE",
+          "sha256": "5b6dc9ce44c7b73620b191c567339212bd00537af46fdedaf98304c34214cc9c",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "index-array-by",
+      "requested_range": "^1.4.0",
+      "version": "1.4.2",
+      "published": "2024-07-19T22:24:47.309Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/index-array-by/1.4.2",
+      "tarball": "https://registry.npmjs.org/index-array-by/-/index-array-by-1.4.2.tgz",
+      "tarball_sha256": "17058579f709a919a1cf80be5b5f7764d23ed9a24c1b005ec5e6066bdf77faba",
+      "registry_integrity": "sha512-SP23P27OUKzXWEC/TOyWlwLviofQkCSCKONnc62eItjp69yCZZPqDQtr3Pw5gJDnPeUMqExmKydNZaJO0FU9pw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/index-array-by-1.4.2/01-LICENSE",
+          "sha256": "5b6dc9ce44c7b73620b191c567339212bd00537af46fdedaf98304c34214cc9c",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "internmap",
+      "requested_range": "1 - 2",
+      "version": "2.0.3",
+      "published": "2021-09-20T03:11:43.688Z",
+      "license": "ISC",
+      "package_url": "https://registry.npmjs.org/internmap/2.0.3",
+      "tarball": "https://registry.npmjs.org/internmap/-/internmap-2.0.3.tgz",
+      "tarball_sha256": "39d1936831a4d3f2bd6e088db28a10de4458d823f652c36b2c808bf5b978c48d",
+      "registry_integrity": "sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/internmap-2.0.3/01-LICENSE",
+          "sha256": "9ea8903938dab5f12c4572d60725069bec2d1b0dc3bcc210b09bae946a5ebb1f",
+          "bytes": 726
+        }
+      ]
+    },
+    {
+      "name": "kapsule",
+      "requested_range": "1",
+      "version": "1.14.6",
+      "published": "2024-10-03T12:34:38.617Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/kapsule/1.14.6",
+      "tarball": "https://registry.npmjs.org/kapsule/-/kapsule-1.14.6.tgz",
+      "tarball_sha256": "dffbb5fa682fcf492678a3f7cfdeadccfbef4635b72e6321df4ffaa3081bb647",
+      "registry_integrity": "sha512-wSi6tHNOfXrIK2Pvv6BhZ9ukzhbp+XZlOOPWSVGUbqfFsnnli4Eq8FN6TaWJv2e17sY5+fKYVxa4DP2oPGlKhg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/kapsule-1.14.6/01-LICENSE",
+          "sha256": "7262e566e874d1ce8cfadace01d4f635f8d704b6bdf7b4345cc028e5faeafded",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "lodash-es",
+      "requested_range": "4",
+      "version": "4.17.21",
+      "published": "2021-02-20T15:43:35.756Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/lodash-es/4.17.21",
+      "tarball": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz",
+      "tarball_sha256": "777598ac703f02b403ef678cd11bce2150ad788f35c774ea7c9cc241a892cb7b",
+      "registry_integrity": "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/lodash-es-4.17.21/01-LICENSE",
+          "sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc",
+          "bytes": 1952
+        }
+      ]
+    },
+    {
+      "name": "point-in-polygon-hao",
+      "requested_range": "^1.1.0",
+      "version": "1.1.0",
+      "published": "2021-08-05T10:18:37.085Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/point-in-polygon-hao/1.1.0",
+      "tarball": "https://registry.npmjs.org/point-in-polygon-hao/-/point-in-polygon-hao-1.1.0.tgz",
+      "tarball_sha256": "03fb54730008bc40e7a455867804cf3c17995813a13d9bc0cc64049954762bc0",
+      "registry_integrity": "sha512-3hTIM2j/v9Lio+wOyur3kckD4NxruZhpowUbEgmyikW+a2Kppjtu1eN+AhnMQtoHW46zld88JiYWv6fxpsDrTQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/point-in-polygon-hao-1.1.0/01-LICENSE",
+          "sha256": "5b2b65f93264110b31282765de411acebf50303c0021ebdb44374739e0892fd0",
+          "bytes": 1082
+        }
+      ]
+    },
+    {
+      "name": "polished",
+      "requested_range": "4",
+      "version": "4.3.1",
+      "published": "2024-02-01T23:14:58.412Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/polished/4.3.1",
+      "tarball": "https://registry.npmjs.org/polished/-/polished-4.3.1.tgz",
+      "tarball_sha256": "dd6094407bda9bcaf96eda981e26904fb12fe766baebc588d12be68219342426",
+      "registry_integrity": "sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==",
+      "notices": [
+        {
+          "member": "package/LICENSE.md",
+          "path": "licenses/dependencies/polished-4.3.1/01-LICENSE.md",
+          "sha256": "671e164460e3edbb93c0e22813d45dd37c1c643c6a7cbddde0f70c8914aab294",
+          "bytes": 1099
+        },
+        {
+          "member": "package/docs/assets/fonts/LICENSE.txt",
+          "path": "licenses/dependencies/polished-4.3.1/02-LICENSE.txt",
+          "sha256": "cb30d3086a8b3ce0b9e3690bf48d6620402b61160bc658076f95180ccd9e9dae",
+          "bytes": 4622
+        }
+      ]
+    },
+    {
+      "name": "rafor",
+      "requested_range": "^1.0.2",
+      "version": "1.0.2",
+      "published": "2015-08-05T15:53:36.605Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/rafor/1.0.2",
+      "tarball": "https://registry.npmjs.org/rafor/-/rafor-1.0.2.tgz",
+      "tarball_sha256": "3363be6b3a7f5998837c2e22a193790d62b32d59d8e325527ed72518a3f6658b",
+      "registry_integrity": "sha512-b8e8/srbSbC0FZTxivEz9pj5z1mQM8CpCEv1aAxuaK26ljSOHJk8AjimcTaHpHIZlwH/VPbli12LuKKrJyyGmA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/rafor-1.0.2/01-LICENSE",
+          "sha256": "a8386d55ac4b117bdae75d703c3d83dd3c1065006489e6298d929a02a585bf22",
+          "bytes": 1081
+        }
+      ]
+    },
+    {
+      "name": "regenerator-runtime",
+      "requested_range": "^0.14.0",
+      "version": "0.14.1",
+      "published": "2023-12-15T20:52:02.938Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/regenerator-runtime/0.14.1",
+      "tarball": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.14.1.tgz",
+      "tarball_sha256": "7e8df38fb205ed668cb38d9d9b154ba3ea14786b0480c21f26f3a95b90497c20",
+      "registry_integrity": "sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/regenerator-runtime-0.14.1/01-LICENSE",
+          "sha256": "51887a3d47051ac2fce1210562e5b9fe0830a8a8fabeb272c2d586eeb18a05fd",
+          "bytes": 1080
+        }
+      ]
+    },
+    {
+      "name": "robust-predicates",
+      "requested_range": "^3.0.2",
+      "version": "3.0.2",
+      "published": "2023-05-25T07:31:35.035Z",
+      "license": "Unlicense",
+      "package_url": "https://registry.npmjs.org/robust-predicates/3.0.2",
+      "tarball": "https://registry.npmjs.org/robust-predicates/-/robust-predicates-3.0.2.tgz",
+      "tarball_sha256": "962cacbec5dc58976307fa534c335331c11a1f8f315fc698776c4e1fc931e17e",
+      "registry_integrity": "sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/robust-predicates-3.0.2/01-LICENSE",
+          "sha256": "88d9b4eb60579c191ec391ca04c16130572d7eedc4a86daa58bf28c6e14c9bcd",
+          "bytes": 1210
+        }
+      ]
+    },
+    {
+      "name": "simplesignal",
+      "requested_range": "^2.1.6",
+      "version": "2.1.7",
+      "published": "2017-04-03T19:59:16.228Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/simplesignal/2.1.7",
+      "tarball": "https://registry.npmjs.org/simplesignal/-/simplesignal-2.1.7.tgz",
+      "tarball_sha256": "e8ef8ab7416358a25968abcb75dc5e30ae1ed1c1550ce90c99253839152abed3",
+      "registry_integrity": "sha512-PEo2qWpUke7IMhlqiBxrulIFvhJRLkl1ih52Rwa+bPjzhJepcd4GIjn2RiQmFSx3dQvsEAgF0/lXMwMN7vODaA==",
+      "notices": [
+        {
+          "member": "package/LICENSE.md",
+          "path": "licenses/dependencies/simplesignal-2.1.7/01-LICENSE.md",
+          "sha256": "de5fc72b9b4a373270d4543cc19304eb201721ffe3e2ebb39ce608bea68f6c4c",
+          "bytes": 1078
+        }
+      ]
+    },
+    {
+      "name": "three",
+      "requested_range": ">=0.154 <1",
+      "version": "0.170.0",
+      "published": "2024-10-31T07:08:27.705Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/three/0.170.0",
+      "tarball": "https://registry.npmjs.org/three/-/three-0.170.0.tgz",
+      "tarball_sha256": "4a608a355dcaba72e0e5383cdc814303f5b6060b43c238cdf6932dceb699238d",
+      "registry_integrity": "sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==",
+      "notices": [
+        {
+          "member": "package/examples/fonts/LICENSE",
+          "path": "licenses/dependencies/three-0.170.0/01-LICENSE",
+          "sha256": "35e8279356d7890871c4fce804d157e3f21456a7311ef2caab5cb4705c71b6bd",
+          "bytes": 2006
+        },
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/three-0.170.0/02-LICENSE",
+          "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+          "bytes": 1081
+        },
+        {
+          "member": "package/examples/fonts/droid/NOTICE",
+          "path": "licenses/dependencies/three-0.170.0/03-NOTICE",
+          "sha256": "38751245389e1e23f73e6f5384b5cbe7fa972cc4410c5adc9c04b082a0b9561a",
+          "bytes": 10695
+        }
+      ]
+    },
+    {
+      "name": "three-conic-polygon-geometry",
+      "requested_range": "1",
+      "version": "1.6.5",
+      "published": "2024-10-30T12:08:31.613Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/three-conic-polygon-geometry/1.6.5",
+      "tarball": "https://registry.npmjs.org/three-conic-polygon-geometry/-/three-conic-polygon-geometry-1.6.5.tgz",
+      "tarball_sha256": "7c439144dff341da07f46c160f3cb4e255aaf232836b2ad3af1e60ef68d51305",
+      "registry_integrity": "sha512-E1xMZYzTZCF6RYjTXUdgzvl8722zpv3C4IivZPYxl2bKYB9lwKcTQMwgOEo7Tjr+3TVZNU7GLuSnTdPq1scwXA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/three-conic-polygon-geometry-1.6.5/01-LICENSE",
+          "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "three-geojson-geometry",
+      "requested_range": "1",
+      "version": "1.3.3",
+      "published": "2024-08-04T19:10:03.090Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/three-geojson-geometry/1.3.3",
+      "tarball": "https://registry.npmjs.org/three-geojson-geometry/-/three-geojson-geometry-1.3.3.tgz",
+      "tarball_sha256": "a2c99a6855b303f7697495e2dfe191e0ceaf319756c649e21c60cd66450a8cf4",
+      "registry_integrity": "sha512-9SogZ9CYfzUYPo0oagGdTCU+Suyjqrbdya24xNbkwMwXr0atF5ozJKPUkdQWHwUy2WgV+i4I9cSjFDnGnanvbQ==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/three-geojson-geometry-1.3.3/01-LICENSE",
+          "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "three-globe",
+      "requested_range": "^2.35",
+      "version": "2.35.2",
+      "published": "2024-11-18T01:26:48.351Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/three-globe/2.35.2",
+      "tarball": "https://registry.npmjs.org/three-globe/-/three-globe-2.35.2.tgz",
+      "tarball_sha256": "1c3896cecd2db7af8879817e285ea5aff4c17bdd128b1536e1b3fbb2d249c7e6",
+      "registry_integrity": "sha512-dRRdwEdBA3JAxNurj7MgHYxLTgdlHNtmFEy4XdBwitkv2s4k9o4fPB8tqsc2Na9aPj6Y26RhQw7xrpBizIaMwA==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/three-globe-2.35.2/01-LICENSE",
+          "sha256": "c633a0da18abe4208665d9faf574f38084bbe38ce5bf743e9ecc06e50b941b59",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "three-render-objects",
+      "requested_range": "^1.31",
+      "version": "1.31.0",
+      "published": "2024-10-30T12:26:42.684Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/three-render-objects/1.31.0",
+      "tarball": "https://registry.npmjs.org/three-render-objects/-/three-render-objects-1.31.0.tgz",
+      "tarball_sha256": "674b84c4af24b863d6046b8864fee94687a322e5a8e3ee50d49cea2e36cecd7c",
+      "registry_integrity": "sha512-of54HTCHatV9OwhrBAKF6A2xtWxBQ47+u5WITTaTbGW6Px9mqLxw7L61dYDHqeQVuvlWMG8VQwyXmkeVsWx4Wg==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/three-render-objects-1.31.0/01-LICENSE",
+          "sha256": "5b6dc9ce44c7b73620b191c567339212bd00537af46fdedaf98304c34214cc9c",
+          "bytes": 1072
+        }
+      ]
+    },
+    {
+      "name": "tinycolor2",
+      "requested_range": "1",
+      "version": "1.6.0",
+      "published": "2023-02-03T23:33:07.774Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/tinycolor2/1.6.0",
+      "tarball": "https://registry.npmjs.org/tinycolor2/-/tinycolor2-1.6.0.tgz",
+      "tarball_sha256": "1fd8164c4b0e1bad09bf2252705fbcf6789dcce7c121aa52b515dd6438eb635b",
+      "registry_integrity": "sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/tinycolor2-1.6.0/01-LICENSE",
+          "sha256": "c6cb470a9ba0a50d57611aeec1f31da609c5aefdbee8eac7f289bcb0e30625fa",
+          "bytes": 1081
+        }
+      ]
+    },
+    {
+      "name": "tslib",
+      "requested_range": "^2.6.2",
+      "version": "2.8.1",
+      "published": "2024-10-31T22:42:48.624Z",
+      "license": "0BSD",
+      "package_url": "https://registry.npmjs.org/tslib/2.8.1",
+      "tarball": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+      "tarball_sha256": "66f635d5eeabae44807534976913a102cf615b9a045368359c9f79ae6ee2119e",
+      "registry_integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
+      "notices": [
+        {
+          "member": "package/LICENSE.txt",
+          "path": "licenses/dependencies/tslib-2.8.1/01-LICENSE.txt",
+          "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751",
+          "bytes": 655
+        }
+      ]
+    },
+    {
+      "name": "yaot",
+      "requested_range": "^1.1",
+      "version": "1.1.3",
+      "published": "2015-08-15T00:38:12.474Z",
+      "license": "MIT",
+      "package_url": "https://registry.npmjs.org/yaot/1.1.3",
+      "tarball": "https://registry.npmjs.org/yaot/-/yaot-1.1.3.tgz",
+      "tarball_sha256": "be52a4290e2642dbf0801810434540489c1dc82d05eed266ae07f9a03ccb3d8c",
+      "registry_integrity": "sha512-AE8LInj21hTuA01RUK+9pSsl0ltQXO+rxn4Q+CJT4+NI/X7dhGGblF7vvzGj6ro0qXRCGAE/7ccEfu6S4DJayw==",
+      "notices": [
+        {
+          "member": "package/LICENSE",
+          "path": "licenses/dependencies/yaot-1.1.3/01-LICENSE",
+          "sha256": "a8386d55ac4b117bdae75d703c3d83dd3c1065006489e6298d929a02a585bf22",
+          "bytes": 1081
+        }
+      ]
+    }
+  ]
+}

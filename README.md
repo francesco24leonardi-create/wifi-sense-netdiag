@@ -122,4 +122,3 @@ Fonti e licenze: vedere licenses/ e asset_manifest.json.
 [DB-IP](https://db-ip.com/),
 [Spamhaus DROP](https://www.spamhaus.org/blocklists/do-not-route-or-peer/).
 Il rapporto VALIDATION.md distingue i test software dalla verifica hardware.
-

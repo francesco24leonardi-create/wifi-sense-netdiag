@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>WiFi-Sense & NetDiag · Local 3D SOC</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/libs/globe.gl.min.js" defer></script>
+  <script src="/static/app.js" type="module"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">W</span><div><h1>WIFI<span>SENSE</span><small>& NETDIAG</small></h1><p>LOCAL NETWORK INTELLIGENCE / 3D OPERATIONS</p></div></div>
+      <div class="session-meta"><span class="local-badge">● ELABORAZIONE LOCALE</span><span id="connection-status" class="status-pill">CONNESSIONE…</span><time id="clock">--:--:--</time></div>
+    </header>
+    <nav class="commandbar" aria-label="Controlli principali">
+      <div class="view-tabs" role="group" aria-label="Vista 3D"><button class="active" data-view="split">Sala operativa</button><button data-view="globe">Globo connessioni</button><button data-view="radar">Radar radio</button></div>
+      <div class="view-controls"><span class="verified-label">SOLO OSSERVAZIONI REALI</span><button id="reset-view" class="icon-button" title="Ripristina entrambe le camere">↺ Vista</button><button id="pause-view" class="icon-button" title="Sospendi solo le animazioni schematiche">Ⅱ</button></div>
+    </nav>
+    <main class="workspace">
+      <aside class="sidebar left-sidebar glass">
+        <div class="panel-heading"><span class="eyebrow">01 / ACQUISIZIONE</span><span id="data-badge" class="tag">IN ATTESA</span></div>
+        <h2>Telemetria radio</h2>
+        <div class="metric-grid">
+          <div class="metric"><span>RSSI</span><strong id="rssi">—</strong><small>dBm · PC ↔ AP</small></div>
+          <div class="metric"><span>JITTER RTT</span><strong id="jitter">—</strong><small>ms · deviazione std.</small></div>
+          <div class="metric"><span>RTT GATEWAY</span><strong id="rtt">—</strong><small>millisecondi</small></div>
+          <div class="metric"><span>LETTURE DEL DRIVER</span><strong id="sample-rate">—</strong><small>letture/s · cache driver possibile</small></div>
+        </div>
+        <div class="health-row"><span id="health-dot" class="indicator"></span><span id="health-status">In attesa di misure</span><span id="packet-loss">—</span></div>
+        <section class="sensing-card"><div class="section-label"><span>PERTURBAZIONE DEL LINK</span><b id="intensity">—</b></div><div id="motion-state">In attesa di dati misurati</div><div class="meter-track"><div id="motion-meter"></div></div><p>Indice derivato dalla varianza RSSI. Non identifica cause, persone o posizioni.</p><button id="calibrate" class="primary full" disabled>Calibra Stanza Vuota (10s)</button><progress id="calibration-progress" max="1" value="0"></progress><small>≈ 6 s di preparazione + 10 s di misura.</small><small id="telemetry-age" class="age-label">Ultimo campione: non disponibile</small></section>
+        <section class="inventory-section"><div class="section-label"><span>DISPOSITIVI OSSERVATI</span><b id="device-count">—</b></div><button id="scan" class="secondary full" disabled>Scansiona LAN · Wi-Fi · BLE</button><p id="scan-status" class="muted compact">Nessuna scansione in corso.</p><small id="inventory-age" class="age-label">Inventario: non acquisito</small><div id="device-list" class="device-list" aria-label="Dispositivi rilevati"></div></section>
+        <div class="local-interface"><span class="eyebrow">INTERFACCIA</span><strong id="interface-name">—</strong><small id="network-address">Gateway non disponibile</small></div>
+      </aside>
+      <section id="scene-stage" class="scene-stage" data-view="split" aria-label="Scene tridimensionali">
+        <div id="observation-banner" class="observation-banner">DATI REALI · posizioni e misure assenti non vengono ricostruite</div>
+        <article id="globe-panel" class="scene-panel globe-panel"><div class="scene-heading"><div><span class="eyebrow">02 / CARTOGRAFIA E POSIZIONE</span><h2>Posizione riferita dal sistema</h2></div><span id="remote-count" class="scene-counter">—</span></div><div id="globe-canvas" class="canvas-host"></div><div class="scene-bottom"><div class="legend"><span class="cyan-dot">Fix del sistema</span><span class="red-dot">IOC nell’elenco flussi</span></div><p id="geo-note">Paese associato all’IP ≠ posizione del server. Nessun arco senza coordinate misurate.</p></div></article>
+        <article id="radar-panel" class="scene-panel radar-panel"><div class="scene-heading"><div><span class="eyebrow">03 / INVENTARIO RADIO</span><h2>Schema radio 3D</h2></div><span class="scene-counter radar-icon">◎</span></div><div id="radar-canvas" class="canvas-host"></div><div class="scene-bottom"><div class="legend"><span class="cyan-dot">Wi-Fi osservato</span><span class="purple-dot">BLE osservato</span><span class="amber-dot">Indice RSSI</span></div><p>Disposizione grafica per categoria. Nessuna distanza, direzione o posizione dei dispositivi misurata.</p></div></article>
+        <div class="orbit-help">TRASCINA: RUOTA <span>·</span> ROTELLA: ZOOM <span>·</span> TASTO DESTRO: SPOSTA <span>·</span> CLIC: ISPEZIONA</div>
+        <div id="scene-error" class="scene-error" hidden><strong>Visualizzazione 3D non disponibile</strong><p id="scene-error-message"></p></div>
+      </section>
+      <aside class="sidebar right-sidebar glass">
+        <section class="location-card"><div class="section-label"><span>POSIZIONE DEL PC</span><span id="location-badge" class="tag">NON ATTIVA</span></div><p id="location-status">Nessuna posizione richiesta al sistema.</p><dl class="location-metrics"><div><dt>Fonte</dt><dd id="location-source">—</dd></div><div><dt>Accuratezza</dt><dd id="location-accuracy">—</dd></div><div><dt>Età del fix</dt><dd id="location-age">—</dd></div></dl><div class="location-buttons"><button id="location-start" class="secondary">Consenti posizione di sistema</button><button id="location-stop" class="secondary" disabled>Interrompi</button></div><small>Il sistema operativo può usare servizi assistiti da Internet. Un fix scaduto non viene mostrato sul globo.</small></section>
+        <div class="panel-heading"><span class="eyebrow">04 / OBJECT INTELLIGENCE</span><span class="tag">ISPETTORE</span></div>
+        <h2 id="inspector-title">Seleziona un oggetto</h2>
+        <p id="inspector-subtitle" class="muted">Clicca un dispositivo, il fix locale o un elemento del diagramma per ispezionarne le evidenze.</p>
+        <div id="inspector-fields" class="inspector-fields"><div class="inspector-empty"><span>⌖</span><p>Ogni elemento conserva sorgente,<br>misure e limiti dell'osservazione.</p></div></div>
+        <section class="connection-section"><div class="section-label"><span>FLUSSI ESTERNI</span><b id="threat-count">— IOC</b></div><small id="connections-age" class="age-label">Flussi: non acquisiti</small><div id="connection-list" class="connection-list"></div><p id="visibility-note" class="muted compact">Le connessioni di altri client richiedono visibilità del traffico.</p></section>
+        <details class="settings"><summary>Acquisizione del traffico</summary><label class="capture-toggle"><input id="capture-toggle" type="checkbox">Cattura passiva locale</label><p>Richiede privilegi e visibilità (es. porta mirror). Non decifra il Wi-Fi e non rende visibili tutti i client.</p></details>
+      </aside>
+    </main>
+    <section class="bottom-deck glass">
+      <article class="signal-hud"><div class="section-label"><span>RSSI FILTRATO / VARIANZA 3 S</span><span id="variance-label">—</span></div><canvas id="signal-chart" aria-label="Forma d'onda RSSI filtrata e varianza"></canvas><small>Ciano: perturbazione · verde: varianza · ambra: soglia della varianza</small></article>
+      <article class="channel-hud"><div class="section-label"><span>CANALI WI-FI OSSERVATI</span><div class="band-tabs"><button class="active" data-band="2.4 GHz">2.4 GHz</button><button data-band="5 GHz">5 GHz</button><button data-band="6 GHz">6 GHz</button></div></div><canvas id="channel-chart" aria-label="RSSI per canale Wi-Fi"></canvas><small>RSSI dei BSSID · non è una misura dello spettro RF o dell'airtime</small></article>
+      <article class="event-hud"><div class="section-label"><span>REGISTRO OPERATIVO</span><span class="indicator cyan"></span></div><div id="event-log" class="event-log" role="log" aria-live="polite"></div></article>
+    </section>
+    <footer class="footer"><span id="status-line">Avvio dei componenti locali…</span><span><a id="dbip-credit" href="https://db-ip.com">IP country by DB-IP</a> · Natural Earth</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.tmp
+*.download
+wheelhouse/
+build/
+dist/
+
+data/settings.json
+.env
+.env.*
+!.env.example
+*.log
+*.pcap
+*.pcapng
+
