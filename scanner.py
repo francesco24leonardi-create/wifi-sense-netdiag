@@ -292,10 +292,20 @@ def discover_ble(network: NetworkInfo, stop: threading.Event,
     return asyncio.run(_ble_scan(stop, duration))
 
 
+def provider_error(source, exc, network):
+    hints = {
+        'mDNS': 'Verificare IPv4 della scheda, multicast UDP 5353, firewall e zeroconf. Nessuna risposta non implica un guasto.',
+        'SSDP': 'Verificare IPv4 della scheda, multicast 239.255.255.250 UDP 1900 e isolamento client del router.',
+        'BLE': 'Verificare Bluetooth acceso, permessi, servizio BlueZ su Linux e driver Bluetooth Windows.',
+        'LAN': 'Verificare subnet e privilegi ARP; cache vicini disponibile senza cattura raw.',
+    }
+    return f'{source} [{network.interface} / {network.address}]: {type(exc).__name__}: {clean(exc, 200)}. {hints.get(source, "")}'
+
+
 def scan_all(network: NetworkInfo, stop: threading.Event,
              progress: Callable[[str], None] | None = None) -> dict:
     """Concurrent one-shot scan; failures remain visible and never erase successes."""
-    result = {'devices': [], 'access_points': [], 'warnings': [], 'channel_summary': '', 'partial': False}
+    result = {'devices': [], 'access_points': [], 'warnings': [], 'channel_summary': '', 'partial': False, 'providers': {}}
     if stop.is_set():
         result.update(partial=True, warnings=['Scansione annullata.'])
         return result
@@ -312,13 +322,15 @@ def scan_all(network: NetworkInfo, stop: threading.Event,
             source = pending[future]
             try:
                 payload = future.result()
+                provider = source
+                result['providers'][provider] = dict(status='completed', observed_at=time.time())
                 if source == 'LAN':
                     entries = []
                     for item in payload.devices:
                         role = 'gateway' if item.ip == network.gateway else 'local_host' if item.ip == network.address else 'endpoint'
-                        source = getattr(item, 'source', '') or 'Inventario LAN, sorgente non specificata'
+                        observation_source = getattr(item, 'source', '') or 'Inventario LAN, sorgente non specificata'
                         entry = device_record(item.ip, 'Gateway configurato' if role == 'gateway' else
-                                              'Questo host' if role == 'local_host' else item.ip, source)
+                                              'Questo host' if role == 'local_host' else item.ip, observation_source)
                         attribution = lan_scanner.mac_attribution(item.mac)
                         observed_at = getattr(item, 'observed_at', None) or time.time()
                         verification = getattr(item, 'verification', 'protocol_claim')
@@ -326,7 +338,7 @@ def scan_all(network: NetworkInfo, stop: threading.Event,
                         entry.update(mac=item.mac, vendor=None, oui_assignee=attribution['oui_assignee'],
                                      ports=list(item.ports), observed_at=observed_at, verification=verification,
                                      role=role, evidence=[evidence, attribution['warning']],
-                                     observations=[{'source': source, 'observed_at': observed_at,
+                                     observations=[{'source': observation_source, 'observed_at': observed_at,
                                                     'verification': verification, 'evidence': evidence}])
                         entry['details'] = {'role': item.role, 'classification': 'Tipo fisico sconosciuto',
                                             'mac_attribution': attribution,
@@ -342,15 +354,19 @@ def scan_all(network: NetworkInfo, stop: threading.Event,
                     result['channel_summary'] = payload.channel_summary
                     result['warnings'].extend(payload.warnings)
                     result['partial'] |= payload.partial
+                    result['providers'][provider].update(count=len(entries), status='partial' if payload.partial else 'completed')
                 else:
                     entries, warnings = payload
                     groups.append(entries)
                     result['warnings'].extend(warnings)
+                    result['providers'][provider].update(count=len(entries), status='partial' if warnings else 'completed')
                     result['partial'] |= bool(warnings)
                 report(f'{source}: osservazioni completate')
             except Exception as exc:
                 result['partial'] = True
-                result['warnings'].append(f'{source} non disponibile: {clean(exc, 300)}')
+                detail = provider_error(source, exc, network)
+                result['providers'][source] = dict(status='unavailable', detail=detail, observed_at=time.time())
+                result['warnings'].append(detail)
     result['devices'] = merge_devices(groups)
     if len(result['devices']) >= LIMIT:
         result['partial'] = True

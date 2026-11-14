@@ -76,3 +76,22 @@ python tests/smoke_local.py
 python setup_offline.py --verify
 python main.py
 ```
+# Radio Lab — revisione 14 novembre 2026
+
+- 91 test automatici superati, inclusi jitter temporale, lacune, esclusione banda
+  5 GHz, telemetria durante sonde e punti di rilievo scaduti.
+- Smoke server: 20 snapshot, dati mancanti mantenuti assenti e nessun worker
+  non-daemon residuo.
+- Fallback Windows GetAdaptersAddresses provato: adattatore IPv4 rilevato senza
+  CIM. Non prova che l'adattatore sia Wi-Fi.
+- Dashboard verificata nel browser: WebGL e nuovi controlli disponibili;
+  nessun errore JavaScript.
+- Hardware Wi-Fi/CSI e Parrot/Kali fisici non disponibili in questo ambiente:
+  nessuna certificazione del rilevamento di persone o della risoluzione di tutti
+  gli errori hardware.
+- Snapshot Spamhaus aggiornato dalla fonte ufficiale: 1849 IOC.
+- Eseguibile Windows x64 compilato con PyInstaller. Avvio del programma compilato
+  verificato: health HTTP, autenticazione WebSocket, telemetria radio/survey e
+  arresto pulito con exit code 0. La finestra nativa Windows e le acquisizioni
+  hardware restano da verificare sul PC di destinazione.
+

@@ -1,4 +1,25 @@
 const $=id=>document.getElementById(id);
+let adapterSignature='';
+function renderRadio(state) {
+  $('radio-status').textContent=state.radio?.message||'Verifica banda in corso';
+  const d=state.diagnostics||{};
+  $('hardware-status').textContent=`${d.cpu_logical||'—'} CPU logiche · limite driver non dichiarato. RSSI grezzo; filtro su griglia temporale regolarizzata. Il rilevatore segnala variazioni RF, non presenza umana confermata.`;
+  const names=(d.interfaces||[]).map(a=>a.name);
+  const signature=JSON.stringify(names);
+  if(signature!==adapterSignature){adapterSignature=signature;$('adapters').replaceChildren(...names.map(name=>{const option=document.createElement('option');option.value=name;return option;}));}
+  $('provider-status').textContent=Object.entries(state.scan?.providers||{}).map(([name,value])=>`${name}: ${value.status}${value.count!==undefined?' · '+value.count+' osservazioni':''}\n${value.detail||''}`).join('\n');
+  $('threats-age').textContent=JSON.stringify(state.capabilities?.threats||{},null,2);
+  const points=state.survey?.points||[];
+  $('survey-status').textContent=`${points.length} punti misurati · X/Y dichiarati dall’utente. Il segnale indica la copertura del link PC/AP.`;
+  $('survey-capture').disabled=!state.radio?.eligible||Boolean(state.scan?.running);
+  const canvas=$('survey-map'),ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
+  ctx.clearRect(0,0,w,h);ctx.fillStyle='#07131e';ctx.fillRect(0,0,w,h);
+  const maxX=Math.max(5,...points.map(p=>p.x_m)),maxY=Math.max(5,...points.map(p=>p.y_m));
+  ctx.strokeStyle='#213c50';ctx.font='10px sans-serif';
+  for(let i=0;i<=5;i++){const x=22+i*(w-36)/5,y=12+i*(h-36)/5;ctx.beginPath();ctx.moveTo(x,12);ctx.lineTo(x,h-24);ctx.moveTo(22,y);ctx.lineTo(w-14,y);ctx.stroke();}
+  for(const point of points){const x=22+point.x_m/maxX*(w-36),y=h-24-point.y_m/maxY*(h-36);ctx.fillStyle=point.rssi_dbm>=-60?'#67efbc':point.rssi_dbm>=-75?'#ffc46d':'#ff6787';ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();ctx.fillText(`${point.id}: ${point.rssi_dbm.toFixed(0)}`,x+7,y-4);}
+  ctx.fillStyle='#93afc1';ctx.fillText(`X 0–${maxX.toFixed(1)} m / Y 0–${maxY.toFixed(1)} m`,22,h-6);
+}
 const num=(value,digits=1)=>typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';
 const categories={pc:'PC',smartphone:'Smartphone',tv:'Smart TV',iot:'IoT',bluetooth:'Bluetooth BLE',router:'Router',radio:'Canale Wi-Fi',unknown:'Non classificato'};
 const symbols={pc:'▣',smartphone:'▯',tv:'▰',iot:'◇',bluetooth:'ᛒ',router:'⌁',radio:'≋',unknown:'◈'};
@@ -107,6 +128,7 @@ function render(state) {
   $('interface-name').textContent=network.interface||'Interfaccia non disponibile';
   $('network-address').textContent=`${network.address||'—'} · GW ${network.gateway||'—'}`;
   $('scan-status').textContent=scan.phase||(scan.running?'Acquisizione in corso…':'Pronto per scansione locale.');
+  $('scan-ble').disabled=Boolean(scan.running);
   $('visibility-note').textContent=state.capabilities?.visibility||'Visibilità delle sole connessioni osservate dal PC o dalla cattura abilitata.';
   $('capture-toggle').checked=Boolean(state.capabilities?.capture);
   const warnings=[...(state.warnings||[]),...(scan.warnings||[]),...(t.warning?[t.warning]:[])];
@@ -117,7 +139,7 @@ function render(state) {
     lastSampleTime=t.timestamp;samples.push({time:t.timestamp,filtered:t.filtered,variance:t.variance,threshold:t.threshold});
     const oldest=t.timestamp-30;while(samples.length&&samples[0].time<oldest)samples.shift();if(samples.length>1500)samples.splice(0,samples.length-1500);
   }
-  renderDevices(state.devices||[]);refreshFreshness();drawSignal();drawChannels();
+  renderRadio(state);renderDevices(state.devices||[]);refreshFreshness();drawSignal();drawChannels();
 }
 
 function ageLabel(age) {
@@ -135,10 +157,10 @@ function refreshFreshness(forceStale=false) {
   $('data-badge').textContent=stale?(age===null?'N/D':'SCADUTI'):'RECENTI';$('data-badge').className=`tag${stale?' amber':''}`;
   $('rssi').textContent=num(t.rssi_dbm,0);$('jitter').textContent=num(t.jitter_ms);$('rtt').textContent=num(t.rtt_ms);$('sample-rate').textContent=num(t.sample_hz);
   $('intensity').textContent=indexValid?`${num(t.intensity,0)}%`:'—';$('motion-meter').style.width=indexValid?`${Math.max(0,Math.min(100,t.intensity))}%`:'0%';
-  $('motion-state').textContent=stale?'Telemetria assente o scaduta':!rssiValid?'RSSI non disponibile':indexValid?(t.rf_perturbation===true?'Soglia della varianza RSSI superata':'Soglia della varianza RSSI non superata'):(t.state||'Indice non disponibile: calibrare');
+  $('motion-state').textContent=(!snapshot.radio?.eligible||scan.running)?(snapshot.radio?.eligible?'RSSI live · analisi esclusa durante sonde':snapshot.radio?.message||'Verifica banda 2,4 GHz'):stale?'Telemetria assente o scaduta':!rssiValid?'RSSI non disponibile':indexValid?(t.rf_perturbation===true?'Soglia della varianza RSSI superata':'Soglia della varianza RSSI non superata'):(t.state||'Indice non disponibile: calibrare');
   document.querySelector('.sensing-card').classList.toggle('motion',indexValid&&t.rf_perturbation===true);
   const calibrating=String(t.state||'').toLocaleLowerCase('it').includes('calibrazione');
-  $('calibrate').disabled=stale||!rssiValid||Boolean(scan.running||calibrating);$('scan').disabled=forceStale||!snapshot.network||Boolean(scan.running||calibrating);
+  $('calibrate').disabled=stale||!rssiValid||!snapshot.radio?.eligible||Boolean(scan.running||calibrating);$('scan').disabled=forceStale||!snapshot.network||Boolean(scan.running||calibrating);
   $('calibration-progress').value=Number.isFinite(t.threshold)?1:Number.isFinite(t.calibration_progress)?Math.max(0,Math.min(1,t.calibration_progress)):0;
   const health=Number.isFinite(t.rtt_ms);
   $('health-status').textContent=stale?'Misure ICMP assenti o scadute':health?(t.loss_percent>5?'Risposte ICMP mancanti':'Gateway risponde a ICMP'):'RTT non disponibile';
@@ -181,9 +203,9 @@ function renderDevices(devices) {
   const fragment=document.createDocumentFragment();
   for(const device of devices.slice(0,100)) {
     const button=document.createElement('button');button.className=`device-button ${device.category||''}`;button.type='button';
-    const symbol=document.createElement('span');symbol.className='device-symbol';symbol.textContent=symbols[device.category]||symbols.unknown;
+    const symbol=document.createElement('span');symbol.className='device-symbol';symbol.textContent=device.transport==='ble'?symbols.bluetooth:symbols[device.category]||symbols.unknown;
     const text=document.createElement('span');text.className='device-text';const name=document.createElement('strong'),detail=document.createElement('small');
-    name.textContent=device.name||device.ip||device.id;detail.textContent=`${categories[device.category]||'Sconosciuto'} · ${device.ip||device.mac||'BLE'}`;text.append(name,detail);
+    name.textContent=device.name||device.ip||device.id;detail.textContent=`${device.transport==='ble'?'Bluetooth LE':categories[device.category]||'Sconosciuto'} · ${device.ip||device.mac||'BLE'}`;text.append(name,detail);
     const signal=document.createElement('span');signal.className='device-signal';signal.textContent=device.rssi_dbm==null?'—':`${num(device.rssi_dbm,0)}`;
     button.append(symbol,text,signal);button.addEventListener('click',()=>inspectDevice((snapshot.devices||[]).find(d=>d.id===device.id)||device));fragment.append(button);
   }
@@ -232,7 +254,9 @@ function drawChannels() {
   const context=canvasContext('channel-chart');if(!context)return;const {ctx,width,height}=context;
   const inventoryAge=snapshot?.freshness?.inventory_age_s;
   const recent=Number.isFinite(inventoryAge)&&inventoryAge+(performance.now()-stateReceivedAt)/1000<=60;
-  const points=(recent?(snapshot?.access_points||[]):[]).filter(ap=>ap.band===chartBand&&ap.channel>0&&Number.isFinite(ap.rssi_dbm));
+  const candidates=(recent?(snapshot?.access_points||[]):[]).filter(ap=>!ap.stale&&ap.band===chartBand&&ap.channel>0);
+  const percent=!candidates.some(ap=>Number.isFinite(ap.rssi_dbm));
+  const points=candidates.filter(ap=>Number.isFinite(percent?ap.signal_percent:ap.rssi_dbm));
   const maxChannel=chartBand==='2.4 GHz'?14:chartBand==='5 GHz'?177:233;
   const left=17,right=width-8,bottom=height-14,top=6;
   ctx.strokeStyle='#203b4c';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(left,top);ctx.lineTo(left,bottom);ctx.lineTo(right,bottom);ctx.stroke();
@@ -241,11 +265,12 @@ function drawChannels() {
   const x=ch=>left+(ch-1)/(maxChannel-1)*(right-left);
   for(const channel of ticks){ctx.fillText(String(channel),x(channel)-4,height-3);ctx.beginPath();ctx.moveTo(x(channel),top);ctx.lineTo(x(channel),bottom);ctx.stroke();}
   for(let i=0;i<points.length;i++) {
-    const ap=points[i],peak=bottom-(Math.max(-100,Math.min(-20,ap.rssi_dbm))+100)/80*(bottom-top),center=x(ap.channel),spread=chartBand==='2.4 GHz'?(right-left)/13*2:7;
+    const ap=points[i],level=percent?Math.max(0,Math.min(100,ap.signal_percent))/100:(Math.max(-100,Math.min(-20,ap.rssi_dbm))+100)/80,peak=bottom-level*(bottom-top),center=x(ap.channel),spread=chartBand==='2.4 GHz'?(right-left)/13*2:7;
     const color=i%2===0?'#45e1ed':'#a58aff';ctx.beginPath();ctx.moveTo(center-spread,bottom);ctx.bezierCurveTo(center-spread*.55,bottom,center-spread*.35,peak,center,peak);ctx.bezierCurveTo(center+spread*.35,peak,center+spread*.55,bottom,center+spread,bottom);
     ctx.strokeStyle=color;ctx.lineWidth=1;ctx.stroke();ctx.lineTo(center-spread,bottom);ctx.fillStyle=i%2===0?'#45e1ed14':'#a58aff14';ctx.fill();
   }
-  if(!points.length){ctx.fillStyle='#6f899e';ctx.fillText('Nessun BSSID con RSSI disponibile in questa banda',left+5,Math.max(20,height*.45));}
+  ctx.fillStyle='#93afc1';ctx.fillText(percent?'Qualità riferita (%) · non dBm':'RSSI (dBm)',left+5,10);
+  if(!points.length){ctx.fillStyle='#6f899e';ctx.fillText('Nessun BSSID misurabile con banda 2,4 GHz verificata',left+5,Math.max(20,height*.45));}
 }
 
 document.querySelectorAll('button[data-view]').forEach(button=>button.addEventListener('click',()=>{
@@ -254,7 +279,14 @@ document.querySelectorAll('button[data-view]').forEach(button=>button.addEventLi
 }));
 document.querySelectorAll('[data-band]').forEach(button=>button.addEventListener('click',()=>{chartBand=button.dataset.band;document.querySelectorAll('[data-band]').forEach(b=>b.classList.toggle('active',b===button));drawChannels();}));
 $('calibrate').addEventListener('click',()=>{if(command('calibrate')){$('calibrate').disabled=true;log('Calibrazione richiesta: mantenere la stanza vuota per preparazione e misura.');}});
-$('scan').addEventListener('click',()=>{if(command('scan')){$('scan').disabled=true;log('Scansione locale richiesta; sensing sospeso durante le sonde.');}});
+$('apply-radio').addEventListener('click',()=>command('settings',{interface:$('adapter-input').value.trim(),hz:Number($('hz-input').value)}));
+$('shutdown-app').addEventListener('click',()=>{if(window.confirm('Arrestare acquisizione e server locale?')){command('shutdown');closing=true;}});
+$('survey-capture').addEventListener('click',()=>command('survey_capture',{x:Number($('survey-x').value),y:Number($('survey-y').value),label:$('survey-label').value}));
+$('survey-clear').addEventListener('click',()=>{if(window.confirm('Cancellare i punti del rilievo corrente dalla memoria? Esporta prima i dati da conservare.'))command('survey_clear');});
+$('survey-export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(snapshot?.survey||{},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='wifi-survey.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+$('refresh-threats').addEventListener('click',()=>command('refresh_threats'));
+$('scan-ble').addEventListener('click',()=>command('ble_scan'));
+$('scan').addEventListener('click',()=>{if(command('scan')){$('scan').disabled=true;log('Scansione richiesta: RSSI e latenza restano attivi; le sonde sono escluse dal rilevatore.');}});
 $('capture-toggle').addEventListener('change',event=>{if(command('capture',{value:event.target.checked}))event.target.disabled=true;});
 $('location-start').addEventListener('click',()=>{if(command('location_start'))$('location-start').disabled=true;});
 $('location-stop').addEventListener('click',()=>command('location_stop'));

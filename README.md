@@ -1,4 +1,7 @@
-# WiFi-Sense & NetDiag — osservazioni reali
+# WiFi-Sense & NetDiag — Radio Lab 2,4 GHz
+
+**Nuova guida:** [RADIO_LAB.md](RADIO_LAB.md): eseguibile Windows, Parrot/Kali/Linux,
+selezione wlan0, copertura casa e limiti del sensing.
 
 Questa revisione rimuove simulazione, coordinate manuali, distanze dedotte
 dall’RSSI e punti geografici dei server ricavati dai centri dei paesi.
@@ -100,8 +103,9 @@ Stringhe di rete sono trattate come testo. Software compromesso sul PC o
 sensori/provider che mentono non possono essere esclusi da questi controlli.
 
 Asset Three.js/Globe.gl, Natural Earth, DB-IP e IOC sono inclusi localmente.
-Lo snapshot Spamhaus consegnato contiene 1846 intervalli (1756 IPv4, 90 IPv6)
-da feed dell’11 novembre 2026; non è un feed live. L’aggiornamento è esplicito:
+Lo snapshot Spamhaus aggiornato contiene 1849 intervalli (1759 IPv4, 90 IPv6).
+Le date originali sono conservate in data/threats.json; non è un feed live.
+È disponibile il pulsante Aggiorna IOC da Internet. Da terminale:
 
 ```bash
 python setup_offline.py --verify

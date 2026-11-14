@@ -141,7 +141,7 @@ export class RadarScene {
   }
 
   update(state) {
-    const devices=(state.devices||[]).slice(0,80);
+    const devices=(state.devices||[]).slice(0,80).map(d=>d.transport==='ble'?{...d,category:'bluetooth',category_note:'Trasporto BLE, tipo fisico non identificato'}:d);
     const points=(state.access_points||[]).slice(0,24).map(ap=>({...ap,id:`ap:${ap.bssid}`,name:ap.ssid||'SSID non annunciato',category:'radio'}));
     const items=[...devices.filter(d=>d.ip!==state.network?.address&&d.ip!==state.network?.gateway),...points];
     const signature=JSON.stringify(items.map(item=>[item.id,item.name,item.category,Boolean(item.stale)]));

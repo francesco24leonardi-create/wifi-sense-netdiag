@@ -12,6 +12,7 @@ import sys
 import threading
 import time
 import webbrowser
+import multiprocessing
 
 os.environ['OTEL_SDK_DISABLED'] = 'true'
 
@@ -169,6 +170,7 @@ class LocalServer:
         self.server = uvicorn.Server(uvicorn.Config(app, host='127.0.0.1', port=self.port,
             log_level='warning', access_log=False, ws_max_size=8192,
             timeout_graceful_shutdown=20, lifespan='on'))
+        self.controller.shutdown = lambda: setattr(self.server, 'should_exit', True)
         self.thread = threading.Thread(target=self.server.run, kwargs={'sockets': [self.socket]},
                                        name='local-asgi', daemon=False)
 
@@ -245,7 +247,12 @@ def main() -> None:
     parser.add_argument('--port', type=int, default=0, help='Porta loopback; 0 sceglie una porta libera')
     parser.add_argument('--browser', action='store_true', help='Apri nel browser locale anziché pywebview')
     parser.add_argument('--headless', action='store_true', help='Solo server locale; stampa URL di sessione')
+    parser.add_argument('--diagnostics', action='store_true', help='Stampa capacità locali e dipendenze senza scansioni')
     args = parser.parse_args()
+    if args.diagnostics:
+        from radio import diagnostics
+        print(json.dumps(diagnostics(), ensure_ascii=False, indent=2))
+        return
     if not 0 <= args.port <= 65535:
         parser.error('Porta non valida')
     if args.hz is not None and (not math_is_hz(args.hz)):
@@ -253,7 +260,11 @@ def main() -> None:
     server = None
     try:
         check_assets(ROOT)
-        settings = load_settings(ROOT / 'data/settings.json')
+        from runtime_paths import user_data
+        settings_path = user_data() / 'settings.json'
+        if not settings_path.exists():
+            settings_path = ROOT / 'data/settings.json'
+        settings = load_settings(settings_path)
         settings['mode'] = 'real'
         if args.location_provider:
             settings['location_provider'] = args.location_provider
@@ -272,16 +283,33 @@ def main() -> None:
             while server.thread.is_alive():
                 server.thread.join(timeout=.25)
         else:
-            import webview
-            window = webview.create_window('WiFi-Sense & NetDiag · Osservazioni reali 3D', server.url,
-                width=1440, height=960, min_size=(1100, 760), background_color='#050b12', text_select=True)
-            if sys.platform == 'win32':
-                server.controller.location.ui_dispatch = native_ui_dispatcher(window)
-            webview.start(gui='edgechromium' if sys.platform == 'win32' else None,
-                          debug=False, private_mode=True)
+            try:
+                import webview
+                webview.settings['ALLOW_DOWNLOADS'] = True
+                window = webview.create_window('WiFi-Sense & NetDiag · Radio Lab', server.url,
+                    width=1440, height=960, min_size=(1100, 760), background_color='#050b12', text_select=True)
+                if sys.platform == 'win32':
+                    server.controller.location.ui_dispatch = native_ui_dispatcher(window)
+                webview.start(gui='edgechromium' if sys.platform == 'win32' else None,
+                              debug=False, private_mode=True)
+            except Exception as exc:
+                # Preserve usable acquisition when WebView2/.NET/GTK is absent.
+                server.controller.location.ui_dispatch = None
+                server.controller.warn(f'Finestra nativa non disponibile ({exc}); interfaccia nel browser locale. Chiudere con Arresta app.')
+                if not webbrowser.open(server.url):
+                    raise RuntimeError('WebView e browser non disponibili; usare --headless da terminale.') from exc
+                while server.thread.is_alive():
+                    server.thread.join(timeout=.25)
     except KeyboardInterrupt:
         return
     except Exception as exc:
+        if getattr(sys, 'frozen', False):
+            from runtime_paths import user_data
+            import traceback
+            (user_data(create=True) / 'startup-error.log').write_text(traceback.format_exc(), encoding='utf-8')
+            if sys.platform == 'win32':
+                import ctypes
+                ctypes.windll.user32.MessageBoxW(None, str(exc) + '\nDettagli in ' + str(user_data() / 'startup-error.log'), 'WiFi-Sense: errore avvio', 16)
         print(f'Avvio non riuscito: {exc}', file=sys.stderr)
         print('Verificare README.md, dipendenze, WebView2/WebKit e python setup_offline.py --verify.', file=sys.stderr)
         raise SystemExit(1) from exc
@@ -296,4 +324,5 @@ def math_is_hz(value: float) -> bool:
 
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     main()

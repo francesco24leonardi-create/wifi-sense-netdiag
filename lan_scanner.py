@@ -266,16 +266,20 @@ def scan_wifi(network: NetworkInfo) -> tuple[list[AccessPoint], list[str]]:
         try:
             output = run_command(["nmcli", "--terse", "--escape", "yes", "--fields",
                                   "SSID,BSSID,CHAN,FREQ,SIGNAL,SECURITY,IN-USE", "device", "wifi", "list",
-                                  "--rescan", "yes", "ifname", network.interface], timeout=8)
+                                  "--rescan", "no", "ifname", network.interface], timeout=8)
             points = parse_nmcli(output)
             warnings.append("Wi-Fi NetworkManager: segnale percentuale mantenuto; RSSI dBm non disponibile da questa sorgente.")
         except (OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
             warnings.append(f"NetworkManager non disponibile ({str(exc)[:100]}); uso iw.")
-            output = run_command(["iw", "dev", network.interface, "scan"], timeout=8)
+            output = run_command(["iw", "dev", network.interface, "scan", "freq",
+                                  *[str(2412+5*i) for i in range(13)]], timeout=8)
             points = parse_iw(output)
     if not points:
         warnings.append("Nessun BSSID leggibile: radio spenta, permessi mancanti o formato non supportato.")
-    return list({ap.bssid: ap for ap in points}.values()), warnings
+    other = sum(ap.band != '2.4 GHz' for ap in points)
+    if other:
+        warnings.append(f'{other} BSSID esclusi: banda diversa o non verificata. Inventario radio limitato a 2,4 GHz.')
+    return list({ap.bssid: ap for ap in points if ap.band == '2.4 GHz'}.values()), warnings
 
 
 def _neighbors(network: NetworkInfo) -> dict[str, str]:
@@ -297,6 +301,8 @@ def _neighbors(network: NetworkInfo) -> dict[str, str]:
 
 def _arp_scan(network: NetworkInfo, scope: ipaddress.IPv4Network,
               stop: threading.Event) -> dict[str, str]:
+    if platform.system() == 'Windows':
+        return _windows_arp(network, scope, stop)
     from scapy.all import ARP, Ether, conf, srp
     # Match the selected address, not conf.iface (which might be a VPN/Ethernet route).
     iface = next((item for item in conf.ifaces.values()
@@ -323,6 +329,66 @@ def _arp_scan(network: NetworkInfo, scope: ipaddress.IPv4Network,
                     found[ip] = mac
                     found.observed_at[ip] = float(packet.time)
     return found
+
+
+def _windows_arp(network, scope, stop):
+    """Use the IP Helper API; no Npcap installation or raw packet driver."""
+    import ctypes as C
+    import struct
+    api = C.WinDLL('iphlpapi', use_last_error=True)
+    send = api.SendARP
+    send.argtypes = [C.c_uint32, C.c_uint32, C.c_void_p, C.POINTER(C.c_uint32)]
+    send.restype = C.c_uint32
+    source = struct.unpack('=I', socket.inet_aton(network.address))[0]
+    def probe(ip):
+        if stop.is_set():
+            return None
+        target = struct.unpack('=I', socket.inet_aton(ip))[0]
+        buffer, length = (C.c_ubyte*8)(), C.c_uint32(8)
+        result = send(target, source, buffer, C.byref(length))
+        if result == 0 and length.value == 6:
+            return ':'.join(f'{b:02x}' for b in buffer[:6])
+        if result in (5, 87):
+            raise OSError(result, 'SendARP: permesso o indirizzo sorgente non valido')
+        return None
+    found = Observations()
+    hosts = iter(str(ip) for ip in scope.hosts() if str(ip) != network.address)
+    with ThreadPoolExecutor(max_workers=16, thread_name_prefix='native-arp') as pool:
+        pending = {}
+        while not stop.is_set():
+            while len(pending) < 16:
+                ip = next(hosts, None)
+                if ip is None:
+                    break
+                pending[pool.submit(probe, ip)] = ip
+            if not pending:
+                break
+            ready, _ = wait(pending, timeout=.1, return_when=FIRST_COMPLETED)
+            for future in ready:
+                ip = pending.pop(future)
+                mac = future.result()
+                if mac:
+                    found[ip] = mac
+                    found.observed_at[ip] = time.time()
+    return found
+
+
+def _populate_neighbors(network, scope, stop):
+    """Source-bound TCP attempts let the OS resolve ARP without raw privileges."""
+    hosts = iter(str(ip) for ip in scope.hosts() if str(ip) != network.address)
+    with ThreadPoolExecutor(max_workers=16, thread_name_prefix='neighbor-probe') as pool:
+        pending = set()
+        while not stop.is_set():
+            while len(pending) < 16:
+                ip = next(hosts, None)
+                if ip is None:
+                    break
+                pending.add(pool.submit(_tcp_open, network.address, ip, 80, stop))
+            if not pending:
+                break
+            done, pending = wait(pending, timeout=.1, return_when=FIRST_COMPLETED)
+            for future in done:
+                future.result()
 
 
 def _tcp_open(source: str, ip: str, port: int, stop: threading.Event) -> bool:
@@ -381,8 +447,9 @@ def scan_network(network: NetworkInfo, stop: threading.Event,
     except Exception as exc:
         host_source = 'OS neighbor cache'
         partial = True
-        warnings.append(f"ARP attivo non disponibile: {str(exc)[:180]}. Uso della cache vicini, potenzialmente incompleta o obsoleta.")
+        warnings.append(f"ARP raw non disponibile ({str(exc)[:150]}). Risoluzione vicini tramite TCP/OS senza privilegi raw; MAC dalla cache, non prova di presenza.")
         try:
+            _populate_neighbors(network, scope, stop)
             hosts = _neighbors(network)
         except Exception as neighbor_exc:
             warnings.append(f"Cache vicini non disponibile: {str(neighbor_exc)[:140]}")

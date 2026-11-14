@@ -18,8 +18,10 @@ from connections import PassiveCapture, host_connections
 from geoip import GeoIPStore, ThreatStore
 from location import LocationManager
 from netio import discover_network
-from scanner import scan_all
+from scanner import scan_all, discover_ble
 from sensing import SensingEngine
+from radio import diagnostics, link_status
+from survey import Survey
 
 
 def json_safe(value):
@@ -59,7 +61,9 @@ class Controller:
     def __init__(self, root: Path, settings: dict):
         self.root, self.settings = root, dict(settings)
         self.geo = GeoIPStore(root / 'data/ipgeo.sqlite', root / 'static/world.geojson')
-        self.threats = ThreatStore(root / 'data/threats.json')
+        from runtime_paths import user_data
+        saved_threats = user_data() / 'threats.json'
+        self.threats = ThreatStore(saved_threats if saved_threats.exists() else root / 'data/threats.json')
         self.capture = PassiveCapture()
         self.network = self.engine = None
         self.mode = 'real'
@@ -79,6 +83,11 @@ class Controller:
         self._started = time.monotonic()
         self._telemetry_received = self._connections_received = self._inventory_received = None
         self._telemetry_observed_at = None
+        self.radio = dict(eligible=False, band=None, message='Verifica link Wi-Fi in corso')
+        self.diagnostics = diagnostics()
+        self.survey = Survey()
+        self._refresh_task = None
+        self._radio_task = None
 
     def warn(self, message: str) -> None:
         if message and message not in self.warning_log:
@@ -87,7 +96,8 @@ class Controller:
     async def start(self) -> None:
         await self.set_mode(self.mode)
         self._tasks = [asyncio.create_task(self._samples(), name='rss-queue'),
-                       asyncio.create_task(self._connections(), name='existing-sockets')]
+                       asyncio.create_task(self._connections(), name='existing-sockets'),
+                       asyncio.create_task(self._radio_loop(), name='radio-link')]
 
     async def _stop_scan(self) -> None:
         self._scan_stop.set()
@@ -123,11 +133,14 @@ class Controller:
             except Exception as exc:
                 self.warn(f'Interfaccia reale non disponibile: {exc}')
             self.scan['phase'] = 'Osservazioni reali · scansione manuale'
-            self.warn('RSSI: valore riferito dal driver; nessuna identificazione o localizzazione di persone.')
+            self.radio = dict(eligible=False, band=None, message='Verifica link Wi-Fi in corso')
+            if self.network is None:
+                self.radio['message'] = 'Nessuna interfaccia connessa disponibile. Scegli la scheda Wi-Fi e premi Applica e riconnetti.'
             if self.threats.warning:
                 self.warn(self.threats.warning)
             if self.network is not None:
                 self.engine = SensingEngine(self.network, fs=self.settings['hz'])
+                self.engine.set_paused(True)
                 self.engine.start()
                 if self.settings.get('capture'):
                     await asyncio.to_thread(self.capture.start, self.network)
@@ -143,6 +156,7 @@ class Controller:
                         break
                     if message.kind == 'sample':
                         self.telemetry = json_safe(asdict(message.payload))
+                        self.survey.observe(self.telemetry, self.radio, self.network.interface if self.network else '')
                         self._telemetry_received = time.monotonic()
                         # Driver acquisition time is unknown; label this as poll time.
                         age = max(0, self._telemetry_received - self.telemetry['timestamp'])
@@ -153,6 +167,44 @@ class Controller:
                 await asyncio.wait_for(self._stop.wait(), .05)
             except asyncio.TimeoutError:
                 continue
+
+    async def _radio_loop(self):
+        previous = None
+        while not self._stop.is_set():
+            generation, network = self._generation, self.network
+            if network and not self._mode_lock.locked():
+                result = await asyncio.to_thread(link_status, network)
+                if generation == self._generation:
+                    context = (network.interface, result.get('bssid'), result.get('band'))
+                    changed = previous is not None and context != previous
+                    self.radio = result
+                    if self.engine:
+                        paused = self.scan['running'] or not result['eligible']
+                        if paused != self.engine._paused.is_set() or changed:
+                            self.engine.set_paused(paused)
+                        if changed:
+                            self.engine.request_baseline_reset()
+                    previous = context
+            try:
+                await asyncio.wait_for(self._stop.wait(), 5)
+            except asyncio.TimeoutError:
+                pass
+
+    async def _refresh_threats(self):
+        try:
+            from setup_offline import refresh_threats
+            from runtime_paths import user_data
+            import shutil
+            path = user_data(create=True) / 'threats.json'
+            if not path.exists():
+                shutil.copyfile(self.root / 'data/threats.json', path)
+            await asyncio.to_thread(refresh_threats, path)
+            previous_warning = self.threats.warning
+            self.threats = ThreatStore(path)
+            self.warning_log = deque((w for w in self.warning_log if w != previous_warning), maxlen=12)
+            self.warn('Database IOC aggiornato da fonte ufficiale; data del feed visibile nei dettagli.')
+        except Exception as exc:
+            self.warn(f'Aggiornamento IOC fallito; snapshot precedente conservato: {exc}')
 
     async def _connections(self) -> None:
         while not self._stop.is_set():
@@ -180,16 +232,15 @@ class Controller:
             except asyncio.TimeoutError:
                 continue
 
-    def start_scan(self) -> None:
+    def start_scan(self, kind='all') -> None:
         if self.scan['running'] or self._mode_lock.locked():
             raise ValueError('Operazione già in corso')
         if self.engine and self.engine.calibration_active:
             raise ValueError('Attendere la fine della calibrazione prima della scansione')
-        if self.mode == 'real' and self.network is None:
+        if self.mode == 'real' and self.network is None and kind != 'ble':
             raise ValueError('Nessuna interfaccia IPv4 selezionata; configurare --interface e riavviare')
         self._scan_stop.clear()
-        self.devices, self.access_points = [], []
-        self._inventory_received = None
+        self._scan_kind = kind
         self.scan = dict(running=True, phase='Scansione in corso', warnings=[])
         if self.engine:
             self.engine.set_paused(True)
@@ -206,20 +257,26 @@ class Controller:
             loop.call_soon_threadsafe(update)
 
         try:
-            result = await asyncio.to_thread(scan_all, self.network, self._scan_stop, phase)
+            if self._scan_kind == 'ble':
+                rows, warnings = await asyncio.to_thread(discover_ble, self.network, self._scan_stop)
+                result = dict(devices=[d for d in self.devices if d.get('transport') != 'ble'] + rows,
+                    access_points=self.access_points, warnings=warnings, partial=bool(warnings),
+                    providers={'BLE': dict(status='partial' if warnings else 'completed', count=len(rows))})
+            else:
+                result = await asyncio.to_thread(scan_all, self.network, self._scan_stop, phase)
             if generation == self._generation:
                 self.devices = result['devices']
                 self.access_points = result['access_points']
                 self._inventory_received = time.monotonic()
                 self.scan = dict(running=False, phase='Scansione parziale' if result['partial'] else 'Scansione completata',
                                  warnings=result['warnings'], channel_summary=result.get('channel_summary', ''),
-                                 partial=result['partial'])
+                                 partial=result['partial'], providers=result.get('providers', {}))
         except Exception as exc:
             self.scan = dict(running=False, phase='Errore scansione', warnings=[str(exc)])
         finally:
             self.scan['running'] = False
             if self.engine:
-                self.engine.set_paused(False)
+                self.engine.set_paused(not self.radio.get('eligible', False))
 
     async def command(self, message: dict) -> str:
         async with self._command_lock:
@@ -229,14 +286,47 @@ class Controller:
 
     async def _command(self, message: dict) -> str:
         action = message.get('action')
-        if action == 'mode':
+        if action == 'shutdown':
+            callback = getattr(self, 'shutdown', None)
+            if callback:
+                asyncio.get_running_loop().call_later(.3, callback)
+        elif action == 'mode':
             await self.set_mode(message.get('value'))
         elif action == 'calibrate':
             if self._mode_lock.locked() or self.scan['running'] or self.engine is None:
                 raise ValueError('Calibrazione non disponibile durante scansione/cambio rete')
+            if not self.radio.get('eligible'):
+                raise ValueError(self.radio.get('message', 'Serve un link 2,4 GHz verificato'))
             self.engine.request_calibration()
+        elif action == 'settings':
+            interface = message.get('interface')
+            hz = message.get('hz', 10)
+            if interface is not None and (not isinstance(interface, str) or len(interface) > 200):
+                raise ValueError('Nome interfaccia non valido')
+            if isinstance(hz, bool) or not isinstance(hz, (int, float)) or not math.isfinite(hz) or not 10 <= hz <= 50:
+                raise ValueError('Frequenza software consentita: 10–50 Hz; massimo fisico del driver non noto')
+            self.settings.update(interface=interface or None, hz=hz)
+            await self.set_mode('real')
+            from runtime_paths import user_data
+            import os
+            path = user_data(create=True) / 'settings.json'
+            temporary = path.with_suffix('.tmp')
+            temporary.write_text(json.dumps(self.settings, ensure_ascii=False, indent=2), encoding='utf-8')
+            os.replace(temporary, path)
+        elif action == 'survey_capture':
+            if self.scan['running'] or not self.radio.get('eligible'):
+                raise ValueError('Attendere fine scansione e collegamento 2,4 GHz verificato')
+            self.survey.capture(message.get('x'), message.get('y'), message.get('label'))
+        elif action == 'survey_clear':
+            self.survey = Survey()
+        elif action == 'refresh_threats':
+            if self._refresh_task and not self._refresh_task.done():
+                raise ValueError('Aggiornamento già in corso')
+            self._refresh_task = asyncio.create_task(self._refresh_threats())
         elif action == 'scan':
             self.start_scan()
+        elif action == 'ble_scan':
+            self.start_scan('ble')
         elif action == 'location_start':
             await self.location.start(provider=self.settings.get('location_provider', 'system'))
         elif action == 'location_stop':
@@ -284,6 +374,11 @@ class Controller:
                            source=telemetry['source'], observed_at=telemetry['observed_at'],
                            verification='derived_from_rssi', identifies_people=False)]
         warnings = list(self.warning_log)
+        if self.scan['running'] or not self.radio.get('eligible'):
+            events = []
+            if telemetry:
+                for field in ('filtered', 'variance', 'intensity', 'rf_perturbation'):
+                    telemetry[field] = None
         if telemetry and telemetry.get('warning'):
             warnings.append(telemetry['warning'])
         if self.threats.warning and self.threats.warning not in warnings:
@@ -305,7 +400,8 @@ class Controller:
             connections=self.connections if connection_age is not None and connection_age <= 10 else [],
             origin=self.location.origin(), location=self.location.snapshot(),
             freshness=dict(telemetry_age_s=telemetry_age, connections_age_s=connection_age, inventory_age_s=inventory_age),
-            scan=self.scan, events=events, warnings=warnings,
+            scan=self.scan, events=events, warnings=warnings, radio=self.radio,
+            diagnostics=self.diagnostics, survey=self.survey.snapshot(),
             capabilities=dict(capture=self.capture.running,
                 visibility='Connessioni di questo PC; altri client solo se realmente osservabili dalla NIC.',
                 geo=self.geo.status(), threats=self.threats.status(), target_hz=self.settings['hz'])))
@@ -355,5 +451,7 @@ class Controller:
                 self.geo.close()
             except Exception as exc:
                 failures.append(str(exc))
+        if self._refresh_task:
+            await self._refresh_task
         if failures:
             raise RuntimeError('; '.join(failures))

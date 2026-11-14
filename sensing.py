@@ -160,6 +160,47 @@ class MotionDetector:
                          state, progress, self.warning)
 
 
+class RegularSampler:
+    """Uniform DSP grid only: raw RSSI telemetry is never interpolated."""
+    def __init__(self, fs):
+        self.fs = fs
+        self.clear()
+
+    def clear(self):
+        self.previous = self.next_time = None
+        self.times = deque(maxlen=30)
+        self.detection = Detection(state='Preparazione filtro temporale')
+
+    def update(self, detector, timestamp, value):
+        if value is None or not np.isfinite(value):
+            self.clear()
+            self.detection = detector.update(timestamp, None)
+            return self.detection
+        if self.previous is not None:
+            dt = timestamp-self.previous[0]
+            if dt <= 0 or dt > 2.5/self.fs:
+                self.clear()
+                detector.reset(cancel_calibration=True)
+        self.times.append(timestamp)
+        if len(self.times) >= 10 and (len(self.times)-1)/(self.times[-1]-self.times[0]) < .8*self.fs:
+            self.clear()
+            detector.reset(cancel_calibration=True)
+            return Detection(state='Campionamento insufficiente', warning='Ridurre le letture richieste; il driver non mantiene la cadenza.')
+        if self.previous is None:
+            self.previous = (timestamp, value)
+            self.next_time = timestamp + 1/self.fs
+            self.detection = detector.update(timestamp, value)
+            return self.detection
+        old_time, old_value = self.previous
+        while self.next_time <= timestamp + 1e-9:
+            fraction = (self.next_time-old_time)/(timestamp-old_time)
+            interpolated = old_value + min(1, max(0, fraction))*(value-old_value)
+            self.detection = detector.update(self.next_time, interpolated)
+            self.next_time += 1/self.fs
+        self.previous = (timestamp, value)
+        return self.detection
+
+
 class SensingEngine(threading.Thread):
     """RSSI/DSP and ICMP workers; only observations, never synthetic fallbacks."""
 
@@ -173,16 +214,21 @@ class SensingEngine(threading.Thread):
         self._calibrate_event = threading.Event()
         self._paused = threading.Event()
         self._reset_event = threading.Event()
+        self._baseline_reset = threading.Event()
         self._lock = threading.Lock()
         self._pings: deque[tuple[float, float | None]] = deque(maxlen=round(fs * 30))
         self._ping_warning = ""
         self.detector = MotionDetector(fs)
+        self.regular = RegularSampler(fs)
 
     def stop(self) -> None:
         self._stop_event.set()
 
     def request_calibration(self) -> None:
         self._calibrate_event.set()
+
+    def request_baseline_reset(self) -> None:
+        self._baseline_reset.set()
 
     @property
     def calibration_active(self) -> bool:
@@ -213,13 +259,15 @@ class SensingEngine(threading.Thread):
         from netio import create_pinger
         pinger = None
         try:
-            pinger = create_pinger(self.network, timeout=min(0.08, 0.8 / self.fs))
+            # RTT sampling has an independent timeout: increasing RSSI polling
+            # must not turn valid 20–200 ms replies into artificial loss.
+            pinger = create_pinger(self.network, timeout=0.25)
             deadline = time.monotonic()
             while not self._stop_event.is_set():
                 rtt = pinger.ping()
                 with self._lock:
                     self._pings.append((time.monotonic(), rtt))
-                deadline += 1 / self.fs
+                deadline += 0.1
                 now = time.monotonic()
                 if deadline < now:
                     deadline = now
@@ -251,6 +299,7 @@ class SensingEngine(threading.Thread):
         times: deque[float] = deque(maxlen=round(5 * self.fs))
         values: deque[float] = deque(maxlen=round(5 * self.fs))
         source_warning = ""
+        retry_at = 0.0
         try:
             from netio import create_rssi_source
             ping_thread = threading.Thread(target=self._ping_loop, name="gateway-icmp",
@@ -267,20 +316,43 @@ class SensingEngine(threading.Thread):
             while not self._stop_event.is_set():
                 now = time.monotonic()
                 paused = self._paused.is_set()
+                if self._baseline_reset.is_set():
+                    self._baseline_reset.clear()
+                    self.detector.threshold = None
+                    self.detector.reset(cancel_calibration=True)
+                    self.regular.clear()
                 if self._reset_event.is_set() or paused != was_paused:
                     self._reset_event.clear()
                     self.detector.reset(cancel_calibration=True)
+                    self.regular.clear()
                     times.clear()
                     values.clear()
                     was_paused = paused
                 if self._calibrate_event.is_set() and not paused:
                     self.detector.calibrate()
+                    self.regular.clear()
                     self._calibrate_event.clear()
+                if source is None and now >= retry_at:
+                    retry_at = now + 5
+                    try:
+                        source = create_rssi_source(self.network)
+                        label, source_warning = source.label, ""
+                    except Exception as exc:
+                        source_warning = str(exc)
                 warning = source_warning
                 if paused:
-                    rssi = None
+                    try:
+                        rssi = source.read() if source is not None else None
+                    except Exception as exc:
+                        rssi, warning = None, str(exc)
+                    if rssi is not None and (not np.isfinite(rssi) or not -120 <= rssi <= -1):
+                        rssi = None
+                    now = time.monotonic()
+                    if rssi is not None:
+                        times.append(now)
+                        values.append(float(rssi))
                     detection = Detection(threshold=self.detector.threshold,
-                                          state="Sensing sospeso durante la scansione")
+                        state="RSSI live · analisi esclusa durante sonde o banda non verificata")
                 else:
                     try:
                         rssi = source.read() if source is not None else None
@@ -293,7 +365,7 @@ class SensingEngine(threading.Thread):
                         rssi = None
                         warning = f"Lettura RSSI: {exc}"
                     now = time.monotonic()
-                    detection = self.detector.update(now, rssi)
+                    detection = self.regular.update(self.detector, now, rssi)
                     if rssi is not None and np.isfinite(rssi) and -120 <= rssi <= -1:
                         times.append(now)
                         values.append(float(rssi))

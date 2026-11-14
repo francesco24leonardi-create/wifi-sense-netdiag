@@ -66,18 +66,26 @@ def discover_network(interface: str | None = None) -> NetworkInfo:
                   prefix=$_.PrefixLength; gateway=$route.NextHop
                   metric=([int]$route.RouteMetric + [int]$ipif.InterfaceMetric)
                   mac=$nic.MacAddress; guid=[string]$nic.InterfaceGuid
+                  wireless=($nic.NdisPhysicalMedium -eq 9 -or $nic.NdisPhysicalMedium -eq 1)
                 }
               }
           }) | ConvertTo-Json -Compress
         """
-        rows = _items(json.loads(run_command(
-            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script], 12
-        ) or "[]"))
+        try:
+            rows = _items(json.loads(run_command(
+                ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script], 12
+            ) or "[]"))
+        except (OSError, RuntimeError, ValueError, subprocess.TimeoutExpired) as exc:
+            from windows_network import discover
+            try:
+                return discover(interface)
+            except Exception as native_exc:
+                raise RuntimeError(f'IPv4: {native_exc}. Anche CIM non disponibile: {str(exc)[:180]}') from native_exc
         if interface:
             rows = [r for r in rows if str(r["interface"]).casefold() == interface.casefold()]
         if not rows:
             raise RuntimeError("Nessuna interfaccia IPv4 con gateway predefinito disponibile.")
-        row = min(rows, key=lambda r: int(r["metric"]))
+        row = min(rows, key=lambda r: (not bool(r.get("wireless")), int(r["metric"])))
         net = ipaddress.IPv4Network(f"0.0.0.0/{int(row['prefix'])}")
         return NetworkInfo(row["interface"], row["address"], str(net.netmask),
                            row["gateway"], (row.get("mac") or "").replace("-", ":"),
@@ -89,7 +97,7 @@ def discover_network(interface: str | None = None) -> NetworkInfo:
                   and (interface is None or r["dev"] == interface)]
         if not routes:
             raise RuntimeError("Nessuna rotta IPv4 predefinita; verificare iproute2 e connessione.")
-        route = min(routes, key=lambda r: int(r.get("metric", 0)))
+        route = min(routes, key=lambda r: (not Path("/sys/class/net", r["dev"], "wireless").exists(), int(r.get("metric", 0))))
         adapters = _items(json.loads(run_command(["ip", "-j", "-4", "addr", "show", "dev", route["dev"]])))
         for adapter in adapters:
             addresses = [a for a in adapter.get("addr_info", [])
@@ -101,7 +109,7 @@ def discover_network(interface: str | None = None) -> NetworkInfo:
                     return NetworkInfo(route["dev"], address["local"], str(net.netmask),
                                        route["gateway"], adapter.get("address", ""))
         raise RuntimeError("Nessun indirizzo IPv4 locale compatibile con il gateway.")
-    raise RuntimeError("Sono supportati Windows e Linux; usare --demo sugli altri sistemi.")
+    raise RuntimeError("Sono supportati Windows e Linux.")
 
 
 class GUID(C.Structure):
@@ -220,6 +228,7 @@ class LinuxRSSI:
         try:
             value = parse_proc_rssi(Path("/proc/net/wireless").read_text(), self.interface)
             if value is not None:
+                self.label = "/proc/net/wireless · RSSI dBm (cache driver)"
                 return value
         except OSError:
             pass
